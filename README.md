@@ -315,4 +315,4 @@ MIT
 
 ## Author
 
-Removed (project template)
+Built by <a href="https://www.mirabelledoiron.com/">Mirabelle</a> as part of <a href="https://www.thewednesdaycollective.com/">The Wednesday Collective</a>
