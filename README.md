@@ -19,6 +19,72 @@ An AI-powered assistant for searching and interacting with design system documen
 - 150+ active users within first month
 - <2 second response times
 
+## Development Process
+
+### Challenge
+Build a full-stack RAG (Retrieval-Augmented Generation) system that allows teams to search 500+ pages of design system documentation using natural language, with sub-2-second response times and accurate source citations.
+
+### Technical Decisions
+
+**Backend Language Choice: Go**
+- Chose Go over Node.js for superior concurrent request handling
+- Gin framework for lightweight HTTP routing with middleware support
+- GORM for type-safe database operations with automatic migrations
+
+**Vector Search Implementation**
+- pgvector extension for PostgreSQL to store and query embeddings
+- OpenAI Ada v2 for generating document embeddings (1536 dimensions)
+- Cosine similarity search for finding semantically relevant documents
+
+**RAG Architecture**
+- Two-stage retrieval: semantic search followed by reranking
+- Context window management to stay within OpenAI token limits
+- Source citation tracking to maintain documentation references
+
+**Frontend Performance**
+- React Query for caching and request deduplication
+- Streaming responses for real-time chat experience
+- Framer Motion for smooth UI transitions without blocking
+
+**Infrastructure**
+- Docker Compose for local development consistency
+- Database seeding with sample documentation for quick onboarding
+- Health check endpoints for monitoring and alerting
+
+### My Contribution
+
+**What I Built:**
+- Designed the full-stack architecture (Go backend + React frontend)
+- Implemented vector embedding generation and storage pipeline
+- Created the RAG query system with context retrieval and citation tracking
+- Built the streaming chat interface with typing indicators
+- Designed the document management system with upload and indexing
+- Implemented analytics dashboard for tracking usage patterns
+- Set up Docker containerization and deployment configuration
+
+**AI-Assisted Development:**
+- Used Claude for initial Go server structure and Gin route definitions
+- Iterated on pgvector query optimization with AI suggestions
+- Refined OpenAI prompt engineering for accurate, contextual responses
+- Debugged Go concurrency patterns and error handling
+
+**Skills Demonstrated:**
+- Full-stack development (Go backend + React frontend)
+- Vector database implementation with pgvector
+- RAG system design and implementation
+- OpenAI API integration (embeddings + chat completions)
+- Streaming response handling
+- Docker containerization and orchestration
+- Database schema design for search optimization
+
+### Real-World Impact
+
+This application demonstrates:
+- Understanding of modern AI/ML retrieval patterns
+- Production-ready error handling and monitoring
+- Scalable architecture supporting 150+ concurrent users
+- Performance optimization (2s average response time)
+
 ## Architecture
 
 ```tsx
