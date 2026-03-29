@@ -1,25 +1,24 @@
-// frontend/src/layouts/MainLayout.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Header } from '@/components/Shared/Header';
-import { Sidebar } from '@/components/Shared/Sidebar';
+import { AppSidebar } from '@/components/Shared/Sidebar';
 import Footer from '@/components/Shared/Footer';
 import { Toaster } from 'react-hot-toast';
 
 export const MainLayout: React.FC = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
   return (
     <div className="flex min-h-screen bg-background text-foreground">
-      <Sidebar />
+      <AppSidebar open={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
 
-      <div className="flex-1 flex flex-col min-h-screen">
+      <div className="flex-1 flex flex-col min-w-0">
         <Header />
-
-        <main className="flex-1 px-8 pb-8">
+        <div className="flex-1 px-8 pb-8">
           <div className="max-w-5xl mx-auto">
             <Outlet />
           </div>
-        </main>
-
+        </div>
         <Footer />
       </div>
 

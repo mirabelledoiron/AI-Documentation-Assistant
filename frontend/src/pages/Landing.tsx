@@ -1,16 +1,17 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen, Search, MessageCircle, Upload, BarChart2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 export function Landing() {
   return (
     <div className="space-y-8">
       {/* Hero */}
-      <section className="pt-2">
-        <p className="text-xs font-semibold tracking-widest text-primary uppercase mb-2">
-          Atelier Design System
-        </p>
-        <h1 className="text-2xl sm:text-3xl font-bold text-foreground leading-tight">
+      <div className="pt-2">
+        <span className="text-xs font-semibold tracking-widest text-primary uppercase">
+          Design System Documentation
+        </span>
+        <h1 className="text-2xl sm:text-3xl font-bold text-foreground leading-tight mt-2">
           AI-Powered Documentation Assistant
         </h1>
         <p className="mt-2 text-foreground/70 text-base max-w-2xl">
@@ -30,10 +31,10 @@ export function Landing() {
             </Link>
           </Button>
         </div>
-      </section>
+      </div>
 
       {/* Feature cards */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <FeatureCard
           icon={<BookOpen className="w-5 h-5" />}
           title="Bring your docs"
@@ -56,30 +57,36 @@ export function Landing() {
           body="See recent questions and responses to understand what people are looking for."
           to="/analytics"
         />
-      </section>
+      </div>
 
       {/* How it works */}
-      <section className="rounded-xl border border-border p-6">
-        <h2 className="text-base font-semibold text-foreground mb-3">How it works</h2>
-        <ol className="space-y-2 text-foreground/70 text-sm">
-          <li><span className="font-medium text-foreground">1.</span> Upload docs (or import them in bulk).</li>
-          <li><span className="font-medium text-foreground">2.</span> The backend generates embeddings (OpenAI) and stores vectors (pgvector).</li>
-          <li><span className="font-medium text-foreground">3.</span> Search and chat queries retrieve top matches, then answer using the retrieved context.</li>
-        </ol>
-      </section>
+      <Card>
+        <CardContent className="p-6">
+          <div className="text-base font-semibold text-foreground mb-3">How it works</div>
+          <div className="space-y-2 text-foreground/70 text-sm">
+            <div><span className="font-medium text-foreground">1.</span> Upload docs (or import them in bulk).</div>
+            <div><span className="font-medium text-foreground">2.</span> The backend generates embeddings (OpenAI) and stores vectors (pgvector).</div>
+            <div><span className="font-medium text-foreground">3.</span> Search and chat queries retrieve top matches, then answer using the retrieved context.</div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
 
 function FeatureCard(props: { icon: React.ReactNode; title: string; body: string; to?: string }) {
   const content = (
-    <div className="rounded-xl border border-border p-5 h-full hover:border-primary/30 transition-colors">
-      <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-primary mb-3">
-        {props.icon}
-      </div>
-      <h3 className="text-sm font-semibold text-foreground">{props.title}</h3>
-      <p className="mt-1.5 text-sm text-foreground/60 leading-relaxed">{props.body}</p>
-    </div>
+    <Card className="h-full hover:border-primary/30 transition-colors">
+      <CardContent className="p-5">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+            {props.icon}
+          </div>
+          <div className="text-sm font-semibold text-foreground">{props.title}</div>
+        </div>
+        <div className="text-sm text-foreground/60 leading-relaxed">{props.body}</div>
+      </CardContent>
+    </Card>
   );
 
   if (!props.to) return content;

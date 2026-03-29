@@ -1,156 +1,134 @@
-import { useRef, useState, useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { Home, MessageCircle, Upload, BarChart2, KeyRound, Briefcase, Search, ExternalLink, X } from 'lucide-react';
-import { searchApi } from '@/services/api';
-import type { SearchResult } from '@/types';
-import { Input } from '@/components/ui/input';
-import { LowCarbonImage } from '@/components/LowCarbonImage';
+import { useState, useEffect } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { ChevronLeft, ChevronRight, Moon, Sun, Menu } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { usePreferences, toggleTheme } from '@/hooks/usePreferences';
 
 const nav = [
-  { to: '/', label: 'Home', icon: Home },
-  { to: '/chat', label: 'Chat', icon: MessageCircle },
-  { to: '/upload', label: 'Upload', icon: Upload },
-  { to: '/analytics', label: 'Query Log', icon: BarChart2 },
-  { to: '/case-studies', label: 'Case Studies', icon: Briefcase },
-  { to: '/settings/api-keys', label: 'API Keys', icon: KeyRound },
+  { to: '/', label: 'HOME' },
+  { to: '/chat', label: 'CHAT' },
+  { to: '/upload', label: 'UPLOAD' },
+  { to: '/analytics', label: 'QUERY LOG' },
+  { to: '/case-studies', label: 'CASE STUDIES' },
+  { to: '/settings/api-keys', label: 'API KEYS' },
 ];
 
-export const Sidebar: React.FC = () => {
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const onMouseDown = (e: MouseEvent) => {
-      const el = wrapperRef.current;
-      if (!el) return;
-      if (e.target instanceof Node && !el.contains(e.target)) {
-        setResults([]);
-        setError(null);
-      }
-    };
-    document.addEventListener('mousedown', onMouseDown);
-    return () => document.removeEventListener('mousedown', onMouseDown);
-  }, []);
-
-  const runSearch = async () => {
-    const q = query.trim();
-    if (!q) return;
-    setIsLoading(true);
-    setError(null);
-    try {
-      const res = await searchApi.search(q, 5);
-      setResults(res);
-    } catch (e) {
-      console.error('Search error:', e);
-      setResults([]);
-      setError('Search failed. Check your API key and backend.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+function SidebarNav() {
   return (
-    <aside className="hidden md:flex flex-col w-60 flex-shrink-0 bg-background h-screen sticky top-0">
-      {/* Logo */}
-      <div className="px-5 pt-5 pb-4">
-        <Link to="/" className="flex items-center gap-2.5">
-          <LowCarbonImage
-            src="/favicon.svg"
-            alt="AI Docs"
-            className="h-8 w-8 object-contain"
-          />
-          <span className="text-sm font-semibold text-foreground tracking-tight">
-            AI Doc Assistant
-          </span>
-        </Link>
-      </div>
-
-      {/* Search */}
-      <div className="px-4 pb-4 relative" ref={wrapperRef}>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            void runSearch();
-          }}
+    <div className="flex-1 py-2">
+      {nav.map((item) => (
+        <NavLink
+          key={item.to}
+          to={item.to}
+          className={({ isActive }) =>
+            [
+              'flex items-center justify-between px-6 py-3 text-xs tracking-[0.15em] transition-colors',
+              isActive
+                ? 'text-foreground font-medium'
+                : 'text-muted-foreground hover:text-foreground',
+            ].join(' ')
+          }
+          end={item.to === '/'}
         >
-          <div className="relative">
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-            <Input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search"
-              className="pl-8 h-9 text-sm bg-muted/50 border-border"
-            />
-            {query.trim() && (
-              <button
-                type="button"
-                onClick={() => { setQuery(''); setResults([]); setError(null); }}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                aria-label="Clear search"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            )}
-          </div>
-        </form>
+          {item.label}
+          <ChevronRight className="w-4 h-4 opacity-40" />
+        </NavLink>
+      ))}
+    </div>
+  );
+}
 
-        {(error || results.length > 0) && (
-          <div className="absolute left-4 right-4 mt-1 z-50 bg-popover border border-border rounded-lg shadow-lg">
-            <div className="p-2">
-              {error && <div className="px-2 py-2 text-sm text-destructive">{error}</div>}
-              {results.map((r, idx) => (
-                <a
-                  key={idx}
-                  href={r.document.url || '#'}
-                  target={r.document.url ? '_blank' : undefined}
-                  rel={r.document.url ? 'noopener noreferrer' : undefined}
-                  className="flex items-start justify-between gap-2 rounded-md px-2 py-2 hover:bg-muted text-sm"
-                >
-                  <div className="min-w-0">
-                    <div className="font-medium text-foreground truncate">{r.document.title}</div>
-                    <div className="text-xs text-muted-foreground line-clamp-1">{r.document.content}</div>
-                  </div>
-                  {r.document.url && <ExternalLink className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0 mt-0.5" />}
-                </a>
-              ))}
-            </div>
-          </div>
+function DarkModeToggle() {
+  const { theme } = usePreferences();
+  return (
+    <div className="mt-auto">
+      <Separator />
+      <Button
+        variant="ghost"
+        onClick={toggleTheme}
+        className="flex items-center justify-start gap-3 px-6 py-4 text-sm text-muted-foreground hover:text-foreground w-full h-auto rounded-none"
+        aria-pressed={theme === 'dark'}
+      >
+        {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+        Dark mode
+      </Button>
+    </div>
+  );
+}
+
+function SidebarInner({ onClose }: { onClose?: () => void }) {
+  return (
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between px-6 py-5">
+        <span className="text-lg font-bold text-foreground">AI Doc Assistant</span>
+        {onClose && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            aria-label="Close sidebar"
+            className="h-7 w-7 text-muted-foreground hover:text-foreground"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </Button>
         )}
       </div>
+      <Separator />
+      <SidebarNav />
+      <DarkModeToggle />
+    </div>
+  );
+}
 
-      {/* Navigation */}
-      <nav className="flex-1 px-3 space-y-0.5">
-        {nav.map((item) => {
-          const Icon = item.icon;
-          return (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              className={({ isActive }) =>
-                [
-                  'flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors',
-                  isActive
-                    ? 'bg-primary/10 text-primary font-medium'
-                    : 'text-foreground/70 hover:bg-muted hover:text-foreground',
-                ].join(' ')
-              }
-              end={item.to === '/'}
-            >
-              <Icon className="w-[18px] h-[18px] flex-shrink-0" />
-              {item.label}
-            </NavLink>
-          );
-        })}
-      </nav>
+interface SidebarProps {
+  open: boolean;
+  onToggle: () => void;
+}
 
-      {/* Footer inside sidebar */}
-      <div className="px-5 py-4 mt-auto text-xs text-muted-foreground">
-        Atelier Design System
-      </div>
-    </aside>
+export const AppSidebar: React.FC<SidebarProps> = ({ open, onToggle }) => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
+
+  return (
+    <>
+      {/* Mobile */}
+      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+        <SheetTrigger
+          className="md:hidden fixed top-4 left-4 z-40 h-10 w-10 flex items-center justify-center rounded-lg bg-card border border-border shadow-sm text-foreground"
+        >
+          <Menu className="w-5 h-5" />
+          <span className="sr-only">Open menu</span>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-64 p-0">
+          <SidebarInner />
+        </SheetContent>
+      </Sheet>
+
+      {/* Desktop: collapsed state */}
+      {!open && (
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={onToggle}
+          aria-label="Open sidebar"
+          className="hidden md:flex fixed top-5 left-5 z-30 h-9 w-9 shadow-sm"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </Button>
+      )}
+
+      {/* Desktop: expanded */}
+      {open && (
+        <div className="hidden md:block w-64 flex-shrink-0 border-r border-border bg-background h-screen sticky top-0 overflow-y-auto">
+          <SidebarInner onClose={onToggle} />
+        </div>
+      )}
+    </>
   );
 };

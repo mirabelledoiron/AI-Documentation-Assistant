@@ -1,5 +1,36 @@
 /* frontend/src/styles/globals.css */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Inter-4.1/web/InterDisplay-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/Inter-4.1/web/InterDisplay-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/Inter-4.1/web/InterDisplay-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/Inter-4.1/web/InterDisplay-Bold.woff2') format('woff2');
+}
 
 @tailwind base;
 @tailwind components;
@@ -7,52 +38,51 @@
 
 @layer base {
   :root {
-    /* App theme tokens (current light defaults) */
-    --atelier-bg: 0 0% 100%;
-    --atelier-fg: 222 47% 11%;
-    --atelier-muted: 215 25% 37%;
-    --atelier-muted-bg: 210 40% 98%;
-    --atelier-border: 214 32% 91%;
-    --atelier-primary: 225 83% 53%;
-    --atelier-accent: 270 91% 65%;
-    --atelier-radius: 0.75rem;
+    /* Light tokens */
+    --background: 220 14% 92%;
+    --foreground: 220 25% 12%;
 
-    /* Atelier (storybook) token model — shadcn-style CSS vars */
-    --background: var(--atelier-bg);
-    --foreground: var(--atelier-fg);
+    --card: 0 0% 100%;
+    --card-foreground: 220 25% 12%;
 
-    --card: var(--atelier-bg);
-    --card-foreground: var(--atelier-fg);
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 25% 12%;
 
-    --popover: var(--atelier-bg);
-    --popover-foreground: var(--atelier-fg);
-
-    --primary: var(--atelier-primary);
+    --primary: 253 26% 33%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: var(--atelier-accent);
+    --secondary: 176 50% 32%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: var(--atelier-muted-bg);
-    --muted-foreground: var(--atelier-muted);
+    --muted: 220 14% 90%;
+    --muted-foreground: 220 12% 35%;
 
-    --accent: var(--atelier-muted-bg);
-    --accent-foreground: var(--atelier-fg);
+    --accent: 220 14% 90%;
+    --accent-foreground: 220 25% 12%;
 
-    --destructive: 0 72% 51%;
+    --destructive: 0 72% 46%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: var(--atelier-border);
-    --input: var(--atelier-border);
-    --ring: var(--atelier-primary);
+    --border: 220 14% 76%;
+    --input: 220 14% 76%;
+    --ring: 253 26% 33%;
 
-    --radius: var(--atelier-radius);
+    --radius: 0.75rem;
 
     --font-sans: 'Inter', system-ui, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-mono: 'Inter', system-ui, sans-serif;
+
+    --sidebar-background: 220 14% 93%;
+    --sidebar-foreground: 220 12% 35%;
+    --sidebar-primary: 253 26% 33%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 88%;
+    --sidebar-accent-foreground: 220 25% 12%;
+    --sidebar-border: 220 14% 76%;
+    --sidebar-ring: 253 26% 33%;
   }
 
-  /* Optional Atelier dark theme (values sourced from the design system repo) */
+  /* Dark tokens */
   .theme-atelier-dark {
     --background: 240 28% 14%;
     --foreground: 0 0% 100%;
@@ -63,7 +93,7 @@
     --popover: 220 47% 16%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 351 80% 59%;
+    --primary: 253 40% 65%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 176 56% 55%;
@@ -80,46 +110,31 @@
 
     --border: 255 26% 33%;
     --input: 255 26% 33%;
-    --ring: 351 80% 59%;
-
-    --radius: 0.75rem;
+    --ring: 253 40% 65%;
 
     --sidebar-background: 240 30% 11%;
     --sidebar-foreground: 218 11% 65%;
-    --sidebar-primary: 351 80% 59%;
+    --sidebar-primary: 253 40% 65%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 218 39% 20%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 255 26% 33%;
-    --sidebar-ring: 351 80% 59%;
-
-    --brand-primary-hover: 350 66% 54%;
-    --brand-primary-light: 345 83% 84%;
-    --brand-secondary-light: 176 55% 68%;
-    --brand-text-subtle: 220 9% 46%;
-    --brand-warning: 47 100% 62%;
-    --brand-surface-elevated: 218 39% 20%;
-
-    /* Keep existing `atelier.*` Tailwind palette working */
-    --atelier-bg: var(--background);
-    --atelier-fg: var(--foreground);
-    --atelier-muted: var(--muted-foreground);
-    --atelier-muted-bg: var(--muted);
-    --atelier-border: var(--border);
-    --atelier-primary: var(--primary);
-    --atelier-accent: var(--secondary);
-    --atelier-radius: var(--radius);
+    --sidebar-ring: 253 40% 65%;
   }
 
   body {
     @apply antialiased;
-    background: hsl(var(--atelier-bg));
-    color: hsl(var(--atelier-fg));
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
     font-family: var(--font-sans);
   }
 
   code, pre, .font-mono {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
+  }
+
+  * {
+    @apply border-border;
   }
 
   /* ------------------------------------------------------------------ */
@@ -129,14 +144,11 @@
   .a11y {
     font-size: 112.5%; /* 18 px base */
 
-    /* Enhanced contrast -- true black/white + tighter muted tones */
     --foreground: 0 0% 0%;
     --card-foreground: 0 0% 0%;
     --popover-foreground: 0 0% 0%;
     --accent-foreground: 0 0% 0%;
     --muted-foreground: 0 0% 25%;
-    --atelier-fg: 0 0% 0%;
-    --atelier-muted: 0 0% 25%;
   }
 
   .a11y.theme-atelier-dark {
@@ -145,8 +157,6 @@
     --popover-foreground: 0 0% 100%;
     --accent-foreground: 0 0% 100%;
     --muted-foreground: 0 0% 75%;
-    --atelier-fg: 0 0% 100%;
-    --atelier-muted: 0 0% 75%;
   }
 
   /* ------------------------------------------------------------------ */
@@ -174,7 +184,7 @@
   outline-offset: 4px;
 }
 
-/* A11y -- visible links (not identified by colour alone) */
+/* A11y -- visible links */
 .a11y a {
   text-decoration: underline !important;
 }
@@ -194,17 +204,6 @@
   backdrop-filter: none !important;
 }
 
-/* Low Carbon -- simplified cards */
-.low-carbon [class*="rounded"] {
-  box-shadow: none !important;
-}
-
-.low-carbon .bg-card,
-.low-carbon [data-slot="card"] {
-  background: transparent !important;
-  border: 1px solid hsl(var(--border)) !important;
-}
-
 @layer utilities {
   .line-clamp-1 {
     overflow: hidden;
@@ -212,14 +211,14 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
   }
-  
+
   .line-clamp-2 {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
-  
+
   .line-clamp-3 {
     overflow: hidden;
     display: -webkit-box;
@@ -230,32 +229,22 @@
   .scrollbar-thin {
     scrollbar-width: thin;
   }
-  
+
   .scrollbar-thin::-webkit-scrollbar {
     width: 6px;
   }
-  
+
   .scrollbar-thin::-webkit-scrollbar-track {
     @apply bg-gray-100;
   }
-  
+
   .scrollbar-thin::-webkit-scrollbar-thumb {
     @apply bg-gray-300 rounded-full;
   }
-  
+
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
     @apply bg-gray-400;
   }
-}
-
-/* Custom animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
 }
 
 /* Markdown-like styles for chat content */
@@ -263,39 +252,39 @@
   & h1, & h2, & h3, & h4 {
     @apply font-bold mt-4 mb-2;
   }
-  
+
   & h1 { @apply text-2xl; }
   & h2 { @apply text-xl; }
   & h3 { @apply text-lg; }
-  
+
   & p {
     @apply my-2;
   }
-  
+
   & ul, & ol {
     @apply my-2 pl-5;
   }
-  
+
   & ul {
     @apply list-disc;
   }
-  
+
   & ol {
     @apply list-decimal;
   }
-  
+
   & code {
-    @apply bg-gray-100 px-2 py-1 rounded text-sm font-mono;
+    @apply bg-gray-100 px-2 py-1 rounded text-sm;
   }
-  
+
   & pre {
     @apply bg-gray-900 text-gray-100 p-3 rounded-md my-2 overflow-x-auto;
   }
-  
+
   & a {
     @apply text-blue-600 hover:text-blue-800 underline;
   }
-  
+
   & blockquote {
     @apply border-l-4 border-gray-300 pl-4 italic my-2 text-gray-600;
   }

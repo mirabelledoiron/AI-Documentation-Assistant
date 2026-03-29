@@ -1,40 +1,21 @@
-// frontend/src/components/Shared/Button.tsx
-import React from 'react';
-import { Button as UiButton } from '@/components/ui/button';
+import { Button as UiButton, type ButtonProps as UiButtonProps } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
+interface ButtonProps extends UiButtonProps {
   loading?: boolean;
   icon?: React.ReactNode;
 }
 
 export const Button: React.FC<ButtonProps> = ({
   children,
-  variant = 'primary',
-  size = 'md',
   loading = false,
   icon,
   className,
   disabled,
   ...props
 }) => {
-  const uiVariant =
-    variant === 'primary'
-      ? 'default'
-      : variant === 'secondary'
-        ? 'secondary'
-        : variant === 'outline'
-          ? 'outline'
-          : 'ghost';
-
-  const uiSize = size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'default';
-
   return (
     <UiButton
-      variant={uiVariant}
-      size={uiSize}
       disabled={disabled || loading}
       className={cn(className)}
       {...props}

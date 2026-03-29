@@ -1,4 +1,5 @@
 import { Sun, Moon, Eye, Leaf } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   usePreferences,
   toggleTheme,
@@ -10,46 +11,39 @@ export const Header: React.FC = () => {
   const { theme, a11y, lowCarbon } = usePreferences();
 
   return (
-    <header className="h-14 flex items-center justify-end px-6 bg-background">
+    <div className="h-14 flex items-center justify-end px-6 bg-background">
       <div className="flex items-center gap-1">
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={toggleTheme}
           aria-pressed={theme === 'dark'}
           aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-          className="h-8 w-8 inline-flex items-center justify-center rounded-lg text-foreground/50 hover:text-foreground hover:bg-muted transition-colors"
+          className="h-8 w-8 text-foreground/50 hover:text-foreground"
         >
           {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          variant={a11y ? 'secondary' : 'ghost'}
+          size="icon"
           onClick={toggleA11y}
           aria-pressed={a11y}
           aria-label={a11y ? 'Disable accessibility mode' : 'Enable accessibility mode'}
-          className={[
-            'h-8 w-8 inline-flex items-center justify-center rounded-lg transition-colors',
-            a11y
-              ? 'text-primary bg-primary/10'
-              : 'text-foreground/50 hover:text-foreground hover:bg-muted',
-          ].join(' ')}
+          className={a11y ? 'h-8 w-8' : 'h-8 w-8 text-foreground/50 hover:text-foreground'}
         >
           <Eye className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          variant={lowCarbon ? 'secondary' : 'ghost'}
+          size="icon"
           onClick={toggleLowCarbon}
           aria-pressed={lowCarbon}
           aria-label={lowCarbon ? 'Disable low carbon mode' : 'Enable low carbon mode'}
-          className={[
-            'h-8 w-8 inline-flex items-center justify-center rounded-lg transition-colors',
-            lowCarbon
-              ? 'text-primary bg-primary/10'
-              : 'text-foreground/50 hover:text-foreground hover:bg-muted',
-          ].join(' ')}
+          className={lowCarbon ? 'h-8 w-8' : 'h-8 w-8 text-foreground/50 hover:text-foreground'}
         >
           <Leaf className="w-4 h-4" />
-        </button>
+        </Button>
       </div>
-    </header>
+    </div>
   );
 };

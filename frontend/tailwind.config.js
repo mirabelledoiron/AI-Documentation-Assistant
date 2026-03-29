@@ -41,22 +41,15 @@ export default {
           DEFAULT: 'hsl(var(--card) / <alpha-value>)',
           foreground: 'hsl(var(--card-foreground) / <alpha-value>)',
         },
-        atelier: {
-          bg: 'hsl(var(--atelier-bg) / <alpha-value>)',
-          fg: 'hsl(var(--atelier-fg) / <alpha-value>)',
-          muted: 'hsl(var(--atelier-muted) / <alpha-value>)',
-          mutedBg: 'hsl(var(--atelier-muted-bg) / <alpha-value>)',
-          border: 'hsl(var(--atelier-border) / <alpha-value>)',
-          primary: 'hsl(var(--atelier-primary) / <alpha-value>)',
-          accent: 'hsl(var(--atelier-accent) / <alpha-value>)',
-        },
       },
       borderRadius: {
-        atelier: 'var(--atelier-radius)',
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        mono: ['Inter', 'system-ui', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

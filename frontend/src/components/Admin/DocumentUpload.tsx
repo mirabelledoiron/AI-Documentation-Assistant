@@ -78,7 +78,7 @@ export const DocumentUpload: React.FC = () => {
 
       <Card className="mb-6">
         <CardContent className="p-4">
-          <div className="text-sm text-foreground font-medium mb-1">Seed from Atelier Storybook</div>
+          <div className="text-sm text-foreground font-medium mb-1">Seed from Storybook</div>
           <div className="text-sm text-muted-foreground">
             Pulls documentation/tokens from the configured GitHub repo into your local database.
           </div>
@@ -102,7 +102,7 @@ export const DocumentUpload: React.FC = () => {
                 }
               }}
             >
-              Sync Atelier Storybook
+              Sync Storybook
             </Button>
             <div className="text-xs text-muted-foreground">Dev-only. Disabled in production.</div>
           </div>

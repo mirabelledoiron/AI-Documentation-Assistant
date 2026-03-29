@@ -71,7 +71,7 @@ export function CaseStudies() {
               <li>Faster onboarding and ramp-up time</li>
               <li>Fewer UI inconsistencies across products</li>
               <li>Searchable institutional knowledge with source links</li>
-              <li>“Atelier Storybook sync” becomes “Sync from your internal repo/Storybook site on demand or CI.”</li>
+              <li>”Storybook sync” becomes “Sync from your internal repo/Storybook site on demand or CI.”</li>
             </ul>
           </CardContent>
         </Card>
