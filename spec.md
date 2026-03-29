@@ -230,12 +230,33 @@ npm run dev
    - Results come from vector similarity (pgvector)
 
 4. **Chat**
-   - Go to `http://localhost:5173/`
+   - Go to `http://localhost:5173/chat`
    - The UI first does a search, then sends context + your question to the chat endpoint.
 
 5. **Analytics**
    - Go to `http://localhost:5173/analytics`
    - Shows recent queries logged by the backend.
+
+## Tailwind + tokens
+
+Yes — Tailwind is in the project and you can implement tokens cleanly.
+
+Recommended approach:
+- Define tokens as CSS variables in `frontend/src/styles/globals.css` (ex: `--color-primary`).
+- Map Tailwind colors to those variables in `frontend/tailwind.config.js`.
+
+This keeps token values centralized while still using Tailwind utility classes.
+
+## Supabase DB connection
+
+Supabase is Postgres, so the backend can connect using `DATABASE_URL`.
+
+Steps:
+1. Create a Supabase project.
+2. Enable pgvector in the Supabase SQL editor:
+   - `CREATE EXTENSION IF NOT EXISTS vector;`
+3. Set `DATABASE_URL` in `backend/.env` to your Supabase connection string.
+   - Supabase typically requires SSL (`sslmode=require`).
 
 ## Figma integration status
 

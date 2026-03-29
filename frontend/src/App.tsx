@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { MainLayout } from '@/layouts/MainLayout';
-import { Home } from '@/pages/Home';
+import { Landing } from '@/pages/Landing';
+import { Chat } from '@/pages/Chat';
 import { SearchInterface } from '@/components/SearchInterface';
 import { DocumentUpload } from '@/components/Admin/DocumentUpload';
 import { Analytics } from '@/pages/Analytics';
@@ -10,7 +11,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/chat" element={<Chat />} />
           <Route path="/search" element={<SearchInterface />} />
           <Route path="/upload" element={<DocumentUpload />} />
           <Route path="/analytics" element={<Analytics />} />

@@ -1,9 +1,9 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { MessageCircle, Search, Upload, BarChart2 } from 'lucide-react';
+import { Home, MessageCircle, Search, Upload, BarChart2 } from 'lucide-react';
 
 const nav = [
-  { to: '/', label: 'Home', icon: MessageCircle },
+  { to: '/', label: 'Overview', icon: Home },
+  { to: '/chat', label: 'Chat', icon: MessageCircle },
   { to: '/search', label: 'Search', icon: Search },
   { to: '/upload', label: 'Upload', icon: Upload },
   { to: '/analytics', label: 'Analytics', icon: BarChart2 },
@@ -11,7 +11,7 @@ const nav = [
 
 export const Sidebar: React.FC = () => {
   return (
-    <aside className="hidden md:block w-64 border-r border-gray-200 bg-white min-h-[calc(100vh-4rem)]">
+    <aside className="hidden md:block w-64 border-r border-atelier-border bg-white min-h-[calc(100vh-4rem)]">
       <nav className="p-3 space-y-1">
         {nav.map((item) => {
           const Icon = item.icon;
@@ -22,7 +22,7 @@ export const Sidebar: React.FC = () => {
               className={({ isActive }) =>
                 [
                   'flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors',
-                  isActive ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50',
+                  isActive ? 'bg-atelier-mutedBg text-atelier-primary' : 'text-gray-700 hover:bg-atelier-mutedBg',
                 ].join(' ')
               }
               end={item.to === '/'}

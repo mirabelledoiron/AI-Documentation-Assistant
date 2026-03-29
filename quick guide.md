@@ -53,7 +53,8 @@ npm run dev
 
 ## 3.1) Using the app (what to click)
 
-- **Chat**: go to `http://localhost:5173/` and ask a question in the chat UI.
+- **Overview**: go to `http://localhost:5173/` to see what the app does.
+- **Chat**: go to `http://localhost:5173/chat` and ask a question in the chat UI.
 - **Search**: go to `http://localhost:5173/search` and run a semantic search.
 - **Upload docs**: go to `http://localhost:5173/upload` to add a document to the database.
 - **Analytics**: go to `http://localhost:5173/analytics` to see recent queries logged by the backend.
@@ -72,6 +73,24 @@ Note: Right now there is **no login/auth UI**. Endpoints are public in local dev
 - If you want Figma integration later, typical options are:
   - Import component docs/tokens from the Figma API on a schedule
   - Build a small Figma plugin that exports component metadata into this app
+
+## 7) Tailwind + tokens (yes, you can use tokens)
+
+Tailwind is in the project, so you can implement design tokens by:
+- defining CSS variables (e.g. `--color-primary`) in `frontend/src/styles/globals.css`
+- mapping Tailwind theme colors to those variables in `frontend/tailwind.config.js`
+
+That gives you “token-driven” Tailwind classes (e.g. `bg-primary`, `text-primary`).
+
+## 8) Supabase DB (how to connect)
+
+Supabase is Postgres. To connect the backend:
+- Create a Supabase project
+- Enable `vector` extension in Supabase SQL editor:
+  - `CREATE EXTENSION IF NOT EXISTS vector;`
+- Set `backend/.env`:
+  - `DATABASE_URL=<your Supabase connection string>`
+  - For Supabase you typically need SSL: add `?sslmode=require` to the URL if it’s not already there.
 
 ## 5) The two “gotchas” you hit (so you remember)
 

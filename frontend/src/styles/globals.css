@@ -5,12 +5,25 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Atelier theme tokens (starter set; adjust to match Atelier exactly) */
+    --atelier-bg: 0 0% 100%;
+    --atelier-fg: 222 47% 11%;
+
+    --atelier-muted: 215 20% 65%;
+    --atelier-muted-bg: 210 40% 98%;
+
+    --atelier-border: 214 32% 91%;
+
+    --atelier-primary: 225 83% 53%;   /* blue */
+    --atelier-accent: 270 91% 65%;    /* purple */
+
+    --atelier-radius: 0.75rem;
   }
 
   body {
-    @apply antialiased text-gray-800;
+    @apply antialiased;
+    background: hsl(var(--atelier-bg));
+    color: hsl(var(--atelier-fg));
   }
 }
 
