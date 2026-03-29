@@ -51,11 +51,27 @@ npm install
 npm run dev
 ```
 
+## 3.1) Using the app (what to click)
+
+- **Chat**: go to `http://localhost:5173/` and ask a question in the chat UI.
+- **Search**: go to `http://localhost:5173/search` and run a semantic search.
+- **Upload docs**: go to `http://localhost:5173/upload` to add a document to the database.
+- **Analytics**: go to `http://localhost:5173/analytics` to see recent queries logged by the backend.
+
+Note: Right now there is **no login/auth UI**. Endpoints are public in local dev so you can use the app end-to-end.
+
 ## 4) URLs
 
 - **Frontend**: `http://localhost:5173`
 - **Backend health**: `http://localhost:8080/health`
 - **API health**: `http://localhost:8080/api/health`
+
+## 6) Figma integration status
+
+- **Not connected to Figma by default.** This project currently indexes docs you provide (via upload/seed) into Postgres + pgvector and uses OpenAI for embeddings/chat.
+- If you want Figma integration later, typical options are:
+  - Import component docs/tokens from the Figma API on a schedule
+  - Build a small Figma plugin that exports component metadata into this app
 
 ## 5) The two “gotchas” you hit (so you remember)
 

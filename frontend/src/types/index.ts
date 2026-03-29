@@ -26,6 +26,14 @@ export interface Document {
   updated_at: string;
 }
 
+export interface UserQuery {
+  id: number;
+  query: string;
+  response?: string;
+  sources?: string[];
+  created_at: string;
+}
+
 export interface SearchRequest {
   query: string;
   limit?: number;

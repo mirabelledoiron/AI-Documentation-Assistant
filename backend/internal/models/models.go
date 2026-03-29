@@ -12,8 +12,8 @@ type Document struct {
 	Category    string    `json:"category" gorm:"index"`
 	Tags        []string  `json:"tags" gorm:"type:text[]"`
 	Embedding   []float32 `json:"-" gorm:"-"`
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 type UserQuery struct {
@@ -21,14 +21,14 @@ type UserQuery struct {
 	Query     string    `json:"query" gorm:"type:text;not null"`
 	Response  string    `json:"response" gorm:"type:text"`
 	Sources   []string  `json:"sources" gorm:"type:text[]"`
-	CreatedAt time.Time
+	CreatedAt time.Time `json:"created_at"`
 }
 
 type Embedding struct {
 	ID         uint      `json:"id" gorm:"primaryKey"`
 	DocumentID uint      `json:"document_id" gorm:"index"`
 	Vector     []float32 `json:"-" gorm:"type:vector(1536)"`
-	CreatedAt  time.Time
+	CreatedAt  time.Time `json:"created_at"`
 }
 
 type SearchRequest struct {

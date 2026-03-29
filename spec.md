@@ -213,6 +213,39 @@ npm run dev
 # Open browser at http://localhost:5173
 ```
 
+## How to use the AI Documentation Assistant (day-to-day)
+
+1. **Start the stack**
+   - Start Postgres (`docker compose ...`)
+   - Run backend migrations + server (`go run ...`)
+   - Run frontend (`cd frontend && npm run dev`)
+
+2. **Upload documentation**
+   - Go to `http://localhost:5173/upload`
+   - Add Title + Content (URL/category/tags optional)
+   - This writes to Postgres and generates embeddings (requires `OPENAI_API_KEY`)
+
+3. **Search**
+   - Go to `http://localhost:5173/search`
+   - Results come from vector similarity (pgvector)
+
+4. **Chat**
+   - Go to `http://localhost:5173/`
+   - The UI first does a search, then sends context + your question to the chat endpoint.
+
+5. **Analytics**
+   - Go to `http://localhost:5173/analytics`
+   - Shows recent queries logged by the backend.
+
+## Figma integration status
+
+This project is **not connected to Figma by default**.
+
+- Today: it indexes documentation you provide (upload/seed) into Postgres + pgvector and uses OpenAI for embeddings/chat.
+- If you want a Figma connection later, typical approaches are:
+  - Pull component descriptions/tokens via the Figma API on a schedule
+  - Use a Figma plugin that exports component metadata to this app
+
 #### 6. Manual API Testing via cURL
 
 ```bash

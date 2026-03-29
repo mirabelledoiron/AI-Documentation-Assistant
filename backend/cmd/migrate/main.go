@@ -40,7 +40,7 @@ func main() {
 		}
 	}
 
-	fmt.Println("✅ migrations applied")
+	fmt.Println("migrations applied")
 }
 
 // naive SQL splitter; good enough for our single migration file

@@ -147,7 +147,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ className = '' }) 
           AI Documentation Assistant
         </h2>
         <p className="text-sm text-gray-600 mt-1">
-          Ask me anything about Indeed's design system
+          Ask me anything about the design system
         </p>
       </div>
 

@@ -36,7 +36,7 @@ func main() {
 	api.SetupRoutes(router)
 
 	// Start server
-	log.Printf("🚀 Starting server on port %s", cfg.Port)
+	log.Printf("Starting server on port %s", cfg.Port)
 	if err := router.Run(":" + cfg.Port); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}

@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { SearchResult, Document, ChatCompletionMessage } from '@/types';
+import { SearchResult, Document, ChatCompletionMessage, UserQuery } from '@/types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
 
@@ -131,6 +131,13 @@ export const documentApi = {
 
   deleteDocument: async (id: number): Promise<void> => {
     await api.delete(`/documents/${id}`);
+  },
+};
+
+export const analyticsApi = {
+  getPopularQueries: async (): Promise<UserQuery[]> => {
+    const response = await api.get('/analytics/popular');
+    return response.data.queries || [];
   },
 };
 

@@ -64,10 +64,10 @@ export const Home: React.FC = () => {
       <div className="py-2">
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-2">
-            {activeTab === 'chat' && '🤖 Chat with AI Assistant'}
-            {activeTab === 'search' && '🔍 Semantic Search'}
-            {activeTab === 'upload' && '📤 Upload Documentation'}
-            {activeTab === 'analytics' && '📊 Analytics Dashboard'}
+            {activeTab === 'chat' && 'Chat with AI Assistant'}
+            {activeTab === 'search' && 'Semantic Search'}
+            {activeTab === 'upload' && 'Upload Documentation'}
+            {activeTab === 'analytics' && 'Analytics Dashboard'}
           </h2>
           <p className="text-gray-600">
             {activeTab === 'chat' && 'Ask questions about design components and get instant answers'}

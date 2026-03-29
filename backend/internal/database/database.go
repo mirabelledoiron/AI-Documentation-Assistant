@@ -29,7 +29,7 @@ func New(dsn string) (*Database, error) {
 	// Enable pgvector extension
 	db.Exec("CREATE EXTENSION IF NOT EXISTS vector")
 
-	log.Println("✅ Database connected successfully")
+	log.Println("Database connected successfully")
 
 	return &Database{db}, nil
 }

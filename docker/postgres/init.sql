@@ -67,7 +67,7 @@ INSERT INTO documents (title, content, url, category, tags) VALUES
   ```html
   <button class="btn-primary">Submit</button>
   ```',
- 'https://design.indeed.com/components/button',
+'https://example.com/components/button',
  'Components',
  ARRAY['button', 'components', 'interaction']),
 
@@ -85,7 +85,7 @@ INSERT INTO documents (title, content, url, category, tags) VALUES
   - Use consistent spacing between related elements
   - Increase spacing between unrelated sections
   - Use the spacing scale exclusively',
- 'https://design.indeed.com/guidelines/spacing',
+'https://example.com/guidelines/spacing',
  'Guidelines',
  ARRAY['spacing', 'layout', 'guidelines']),
 
@@ -108,7 +108,7 @@ INSERT INTO documents (title, content, url, category, tags) VALUES
     showError('Please enter a valid email address');
   }
   ```',
- 'https://design.indeed.com/patterns/form-validation',
+'https://example.com/patterns/form-validation',
  'Patterns',
  ARRAY['forms', 'validation', 'patterns']),
 
@@ -130,7 +130,7 @@ INSERT INTO documents (title, content, url, category, tags) VALUES
   - Gray-700: #495057
   - Gray-400: #CED4DA
   - Gray-100: #F8F9FA',
- 'https://design.indeed.com/tokens/color',
+'https://example.com/tokens/color',
  'Tokens',
  ARRAY['colors', 'tokens', 'design-tokens']),
 
@@ -151,6 +151,6 @@ INSERT INTO documents (title, content, url, category, tags) VALUES
   **Resources:**
   - [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
   - [ARIA Practices](https://www.w3.org/WAI/ARIA/apg/)',
- 'https://design.indeed.com/guidelines/accessibility',
+'https://example.com/guidelines/accessibility',
  'Accessibility',
  ARRAY['a11y', 'accessibility', 'guidelines']);

@@ -106,10 +106,12 @@ func chatHandler(c *gin.Context) {
 	}
 
 	// Search for relevant context first
+	var searchResults []models.SearchResult
 	if len(req.Messages) > 0 {
 		lastMessage := req.Messages[len(req.Messages)-1].Content
-		searchResults, err := performSearch(lastMessage, 3)
-		if err == nil && len(searchResults) > 0 {
+		results, err := performSearch(lastMessage, 3)
+		if err == nil && len(results) > 0 {
+			searchResults = results
 			// Add context to messages
 			context := formatSearchContext(searchResults)
 			req.Messages = append([]models.Message{{
@@ -136,6 +138,16 @@ func chatHandler(c *gin.Context) {
 		Message: resp.Choices[0].Message.Content,
 	}
 
+	// Log for analytics (query = last user message, response = assistant message)
+	if len(req.Messages) > 0 {
+		last := req.Messages[len(req.Messages)-1].Content
+		st.db.Create(&models.UserQuery{
+			Query:    last,
+			Response: response.Message,
+			Sources:  extractSourceURLs(searchResults),
+		})
+	}
+
 	c.JSON(http.StatusOK, response)
 }
 
@@ -159,10 +171,12 @@ func chatStreamHandler(c *gin.Context) {
 	client := openai.NewClient(st.cfg.OpenAI.APIKey)
 	
 	// Add search context
+	var searchResults []models.SearchResult
 	if len(req.Messages) > 0 {
 		lastMessage := req.Messages[len(req.Messages)-1].Content
-		searchResults, err := performSearch(lastMessage, 3)
-		if err == nil && len(searchResults) > 0 {
+		results, err := performSearch(lastMessage, 3)
+		if err == nil && len(results) > 0 {
+			searchResults = results
 			context := formatSearchContext(searchResults)
 			req.Messages = append([]models.Message{{
 				Role:    "system",
@@ -185,6 +199,8 @@ func chatStreamHandler(c *gin.Context) {
 	}
 	defer stream.Close()
 
+	var streamed strings.Builder
+
 	for {
 		response, err := stream.Recv()
 		if err != nil {
@@ -192,6 +208,16 @@ func chatStreamHandler(c *gin.Context) {
 				// Let the frontend know we're done.
 				c.Writer.WriteString("data: [DONE]\n\n")
 				c.Writer.Flush()
+
+				// Log for analytics when stream completes
+				if len(req.Messages) > 0 {
+					last := req.Messages[len(req.Messages)-1].Content
+					st.db.Create(&models.UserQuery{
+						Query:    last,
+						Response: streamed.String(),
+						Sources:  extractSourceURLs(searchResults),
+					})
+				}
 				return
 			}
 			c.SSEvent("error", gin.H{"message": err.Error()})
@@ -205,6 +231,7 @@ func chatStreamHandler(c *gin.Context) {
 				payload := fmt.Sprintf("{\"content\":%q}", delta.Content)
 				c.Writer.WriteString("data: " + payload + "\n\n")
 				c.Writer.Flush()
+				streamed.WriteString(delta.Content)
 			}
 		}
 	}

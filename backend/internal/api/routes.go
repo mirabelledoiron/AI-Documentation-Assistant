@@ -23,11 +23,13 @@ func SetupRoutes(router *gin.Engine) {
 		api.POST("/chat", chatHandler)
 		api.POST("/chat/stream", chatStreamHandler)
 
-		api.GET("/documents", AuthMiddleware(jwtSecret), listDocumentsHandler)
-		api.POST("/documents", AuthMiddleware(jwtSecret), createDocumentHandler)
-		api.DELETE("/documents/:id", AuthMiddleware(jwtSecret), deleteDocumentHandler)
+		// NOTE: No auth flow is implemented yet (no login/token issuance).
+		// Keep these public for now so local dev works end-to-end.
+		api.GET("/documents", listDocumentsHandler)
+		api.POST("/documents", createDocumentHandler)
+		api.DELETE("/documents/:id", deleteDocumentHandler)
 
-		api.GET("/analytics/popular", AuthMiddleware(jwtSecret), popularQueriesHandler)
+		api.GET("/analytics/popular", popularQueriesHandler)
 	}
 
 	// Back-compat (older frontend/docker compose)
@@ -36,9 +38,9 @@ func SetupRoutes(router *gin.Engine) {
 		v1.POST("/search", searchHandler)
 		v1.POST("/chat", chatHandler)
 		v1.POST("/chat/stream", chatStreamHandler)
-		v1.GET("/documents", AuthMiddleware(jwtSecret), listDocumentsHandler)
-		v1.POST("/documents", AuthMiddleware(jwtSecret), createDocumentHandler)
-		v1.DELETE("/documents/:id", AuthMiddleware(jwtSecret), deleteDocumentHandler)
-		v1.GET("/analytics/popular", AuthMiddleware(jwtSecret), popularQueriesHandler)
+		v1.GET("/documents", listDocumentsHandler)
+		v1.POST("/documents", createDocumentHandler)
+		v1.DELETE("/documents/:id", deleteDocumentHandler)
+		v1.GET("/analytics/popular", popularQueriesHandler)
 	}
 }
