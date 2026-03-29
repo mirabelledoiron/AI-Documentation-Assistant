@@ -3,6 +3,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Header } from '@/components/Shared/Header';
 import { Sidebar } from '@/components/Shared/Sidebar';
+import Footer from '@/components/Shared/Footer';
 import { Toaster } from 'react-hot-toast';
 
 export const MainLayout: React.FC = () => {
@@ -20,9 +21,7 @@ export const MainLayout: React.FC = () => {
         </main>
       </div>
       
-      <footer className="border-t border-border py-4 text-center text-sm text-muted-foreground">
-        {new Date().getFullYear()} | Mirabelle Doiron
-      </footer>
+      <Footer />
 
       <Toaster
         position="top-right"
