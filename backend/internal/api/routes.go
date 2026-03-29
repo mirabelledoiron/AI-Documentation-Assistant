@@ -19,6 +19,7 @@ func SetupRoutes(router *gin.Engine) {
 		api.POST("/search", searchHandler)
 		api.POST("/chat", chatHandler)
 		api.POST("/chat/stream", chatStreamHandler)
+		api.POST("/reindex", reindexEmbeddingsHandler)
 
 		// NOTE: No auth flow is implemented yet (no login/token issuance).
 		// Keep these public for now so local dev works end-to-end.
@@ -27,6 +28,9 @@ func SetupRoutes(router *gin.Engine) {
 		api.DELETE("/documents/:id", deleteDocumentHandler)
 
 		api.GET("/analytics/popular", popularQueriesHandler)
+
+		// Dev-only seeding: pull Atelier Storybook docs/tokens into the DB.
+		api.POST("/admin/atelier/sync", atelierSyncHandler)
 	}
 
 	// Back-compat (older frontend/docker compose)
@@ -35,9 +39,11 @@ func SetupRoutes(router *gin.Engine) {
 		v1.POST("/search", searchHandler)
 		v1.POST("/chat", chatHandler)
 		v1.POST("/chat/stream", chatStreamHandler)
+		v1.POST("/reindex", reindexEmbeddingsHandler)
 		v1.GET("/documents", listDocumentsHandler)
 		v1.POST("/documents", createDocumentHandler)
 		v1.DELETE("/documents/:id", deleteDocumentHandler)
 		v1.GET("/analytics/popular", popularQueriesHandler)
+		v1.POST("/admin/atelier/sync", atelierSyncHandler)
 	}
 }

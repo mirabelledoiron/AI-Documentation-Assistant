@@ -2,6 +2,7 @@
 package services
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"strings"
@@ -11,17 +12,23 @@ import (
 
 type ChatService struct {
 	client *openai.Client
+	model  string
 }
 
-func NewChatService(apiKey string) *ChatService {
+func NewChatService(apiKey string, model string) *ChatService {
+	model = strings.TrimSpace(model)
+	if model == "" {
+		model = "gpt-4o-mini"
+	}
 	return &ChatService{
 		client: openai.NewClient(apiKey),
+		model:  model,
 	}
 }
 
 func (s *ChatService) GenerateResponse(messages []openai.ChatCompletionMessage) (string, error) {
 	resp, err := s.client.CreateChatCompletion(context.Background(), openai.ChatCompletionRequest{
-		Model:       openai.GPT3Dot5Turbo,
+		Model:       s.model,
 		Messages:    messages,
 		Temperature: 0.7,
 		MaxTokens:   1000,
@@ -38,7 +45,7 @@ func (s *ChatService) StreamResponse(messages []openai.ChatCompletionMessage, st
 	defer cancel()
 
 	openaiStream, err := s.client.CreateChatCompletionStream(ctx, openai.ChatCompletionRequest{
-		Model:       openai.GPT3Dot5Turbo,
+		Model:       s.model,
 		Messages:    messages,
 		Temperature: 0.7,
 		MaxTokens:   1000,
@@ -63,20 +70,20 @@ func (s *ChatService) StreamResponse(messages []openai.ChatCompletionMessage, st
 }
 
 func FormatContextForLLM(results []map[string]interface{}) string {
-	var context strings.Builder
-	context.WriteString("Relevant documentation:\n\n")
-	
+	var buf bytes.Buffer
+	buf.WriteString("Relevant documentation:\n\n")
+
 	for i, result := range results {
 		content := result["content"].(string)
 		if len(content) > 300 {
 			content = content[:300] + "..."
 		}
-		
-		context.WriteString(fmt.Sprintf("Document %d: %s\n%s\n\n", 
-			i+1, 
-			result["title"].(string), 
+
+		buf.WriteString(fmt.Sprintf("Document %d: %s\n%s\n\n",
+			i+1,
+			result["title"].(string),
 			content))
 	}
-	
-	return context.String()
+
+	return buf.String()
 }

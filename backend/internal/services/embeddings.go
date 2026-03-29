@@ -3,24 +3,42 @@ package services
 
 import (
 	"context"
+	"strings"
 
 	"github.com/sashabaranov/go-openai"
 )
 
 type EmbeddingService struct {
-	client *openai.Client
+	client         *openai.Client
+	embeddingModel openai.EmbeddingModel
 }
 
-func NewEmbeddingService(apiKey string) *EmbeddingService {
+func NewEmbeddingService(apiKey string, embeddingModel string) *EmbeddingService {
+	model := parseEmbeddingModel(embeddingModel)
 	return &EmbeddingService{
-		client: openai.NewClient(apiKey),
+		client:         openai.NewClient(apiKey),
+		embeddingModel: model,
 	}
+}
+
+func parseEmbeddingModel(model string) openai.EmbeddingModel {
+	// go-openai@v1.17.9 uses an enum for embedding models.
+	// Convert from an env/config string via UnmarshalText.
+	if strings.TrimSpace(model) == "" {
+		return openai.AdaEmbeddingV2
+	}
+	var parsed openai.EmbeddingModel
+	_ = parsed.UnmarshalText([]byte(model))
+	if parsed == openai.Unknown {
+		return openai.AdaEmbeddingV2
+	}
+	return parsed
 }
 
 func (s *EmbeddingService) GetEmbedding(text string) ([]float32, error) {
 	resp, err := s.client.CreateEmbeddings(context.Background(), openai.EmbeddingRequest{
 		Input: text,
-		Model: openai.AdaEmbeddingV2,
+		Model: s.embeddingModel,
 	})
 	if err != nil {
 		return nil, err

@@ -29,7 +29,7 @@ describe('API Service', () => {
 
   it('should add auth token to requests', () => {
     localStorage.setItem('auth_token', 'test-token');
-    const config = addAuthToken({ headers: {} });
+    const config = addAuthToken({ headers: {} as Record<string, string> });
     expect(config.headers.Authorization).toBe('Bearer test-token');
   });
 
@@ -75,7 +75,7 @@ describe('API Service', () => {
       },
     });
 
-    global.fetch = vi.fn().mockResolvedValue({
+    (globalThis as any).fetch = vi.fn().mockResolvedValue({
       ok: true,
       body: mockStream,
     });

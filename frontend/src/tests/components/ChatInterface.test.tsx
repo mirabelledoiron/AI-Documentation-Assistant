@@ -9,12 +9,15 @@ vi.mock('@/services/api', () => ({
   },
   chatApi: {
     streamMessage: vi.fn(),
+    sendMessage: vi.fn(),
   },
 }));
 
 describe('ChatInterface', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    localStorage.setItem('ai_provider', 'openai');
+    localStorage.setItem('openai_api_key', 'test-key');
     (searchApi.search as any).mockResolvedValue([]);
     (chatApi.streamMessage as any).mockImplementation(
       (_messages: any, onMessage: any, onComplete: any) => {
@@ -22,11 +25,12 @@ describe('ChatInterface', () => {
         onComplete();
       }
     );
+    (chatApi.sendMessage as any).mockResolvedValue('Test response');
   });
 
   it('renders initial welcome screen', () => {
     render(<ChatInterface />);
-    expect(screen.getByText(/Welcome to AI-Powered Documentation Assistant/i)).toBeInTheDocument();
+    expect(screen.getByText(/Start a conversation/i)).toBeInTheDocument();
   });
 
   it('sends a message when form is submitted', async () => {

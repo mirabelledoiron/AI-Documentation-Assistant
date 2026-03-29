@@ -1,5 +1,6 @@
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import { SearchResult, Document, ChatCompletionMessage, UserQuery } from '@/types';
+import { getProviderKeys } from '@/services/providerKeys';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
 
@@ -11,7 +12,7 @@ const api = axios.create({
   },
 });
 
-export function addAuthToken(config: any) {
+export function addAuthToken<T extends { headers?: any }>(config: T): T {
   const token = localStorage.getItem('auth_token');
   if (token) {
     config.headers = config.headers || {};
@@ -20,12 +21,21 @@ export function addAuthToken(config: any) {
   return config;
 }
 
+export function addProviderKeys<T extends { headers?: any }>(config: T): T {
+  const { provider, openAIKey, anthropicKey } = getProviderKeys();
+  config.headers = config.headers || {};
+  config.headers['X-AI-Provider'] = provider;
+  if (openAIKey) config.headers['X-OpenAI-Key'] = openAIKey;
+  if (anthropicKey) config.headers['X-Anthropic-Key'] = anthropicKey;
+  return config;
+}
+
 // Request interceptor
 api.interceptors.request.use(
-  (config) => {
-    return addAuthToken(config);
+  (config: InternalAxiosRequestConfig) => {
+    return addProviderKeys(addAuthToken(config));
   },
-  (error) => Promise.reject(error)
+  (error: unknown) => Promise.reject(error)
 );
 
 // Response interceptor
@@ -33,9 +43,9 @@ api.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
     if (error.response?.status === 401) {
-      // Handle unauthorized
+      // No auth flow is implemented in this project yet.
+      // Keep the app usable by clearing any stale token without redirecting.
       localStorage.removeItem('auth_token');
-      window.location.href = '/login';
     }
     return Promise.reject(error);
   }
@@ -60,9 +70,15 @@ export const chatApi = {
     onComplete: () => void = () => {},
     onError: (error: Error) => void = () => {}
   ): Promise<void> => {
+    const { provider, openAIKey, anthropicKey } = getProviderKeys();
     const response = await fetch(`${API_BASE_URL}/chat/stream`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-AI-Provider': provider,
+        ...(openAIKey ? { 'X-OpenAI-Key': openAIKey } : {}),
+        ...(anthropicKey ? { 'X-Anthropic-Key': anthropicKey } : {}),
+      },
       body: JSON.stringify({ messages, stream: true }),
     });
 

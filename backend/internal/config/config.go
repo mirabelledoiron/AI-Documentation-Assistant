@@ -3,6 +3,7 @@ package config
 
 import (
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -11,7 +12,16 @@ type Config struct {
 	Environment string
 	Database    DatabaseConfig
 	OpenAI      OpenAIConfig
+	Seed        SeedConfig
 	Security    SecurityConfig
+}
+
+type SeedConfig struct {
+	GitHubOwner     string
+	GitHubRepo      string
+	DefaultRef      string
+	DefaultLimit    int
+	AutoSeedOnStart bool
 }
 
 type DatabaseConfig struct {
@@ -19,8 +29,9 @@ type DatabaseConfig struct {
 }
 
 type OpenAIConfig struct {
-	APIKey string
-	Model  string
+	APIKey         string
+	Model          string
+	EmbeddingModel string
 }
 
 type SecurityConfig struct {
@@ -42,7 +53,17 @@ func Load() *Config {
 		},
 		OpenAI: OpenAIConfig{
 			APIKey: getEnv("OPENAI_API_KEY", ""),
-			Model:  getEnv("OPENAI_MODEL", "gpt-3.5-turbo"),
+			Model:  getEnv("OPENAI_MODEL", "gpt-4o-mini"),
+			// NOTE: github.com/sashabaranov/go-openai@v1.17.9 only supports enumerated embedding models
+			// (e.g. text-embedding-ada-002). If you set an unsupported value, the backend will fall back.
+			EmbeddingModel: getEnv("OPENAI_EMBEDDING_MODEL", "text-embedding-ada-002"),
+		},
+		Seed: SeedConfig{
+			GitHubOwner:     getEnv("SEED_GITHUB_OWNER", "mirabelledoiron"),
+			GitHubRepo:      getEnv("SEED_GITHUB_REPO", "Atelier-Design-System"),
+			DefaultRef:      getEnv("SEED_GITHUB_REF", "main"),
+			DefaultLimit:    getEnvInt("SEED_GITHUB_LIMIT", 200),
+			AutoSeedOnStart: getEnvBool("SEED_AUTO_ON_START", true),
 		},
 		Security: SecurityConfig{
 			JWTSecret: getEnv("JWT_SECRET", "your-secret-key"),
@@ -64,4 +85,31 @@ func getEnvSlice(key string, defaultValue []string) []string {
 		return defaultValue
 	}
 	return strings.Split(value, ",")
+}
+
+func getEnvInt(key string, defaultValue int) int {
+	value := strings.TrimSpace(os.Getenv(key))
+	if value == "" {
+		return defaultValue
+	}
+	n, err := strconv.Atoi(value)
+	if err != nil {
+		return defaultValue
+	}
+	return n
+}
+
+func getEnvBool(key string, defaultValue bool) bool {
+	value := strings.TrimSpace(os.Getenv(key))
+	if value == "" {
+		return defaultValue
+	}
+	switch strings.ToLower(value) {
+	case "1", "true", "yes", "y", "on":
+		return true
+	case "0", "false", "no", "n", "off":
+		return false
+	default:
+		return defaultValue
+	}
 }

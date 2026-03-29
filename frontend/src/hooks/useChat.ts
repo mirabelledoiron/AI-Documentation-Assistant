@@ -2,6 +2,7 @@
 import { useState, useCallback } from 'react';
 import { Message, ChatCompletionMessage } from '@/types';
 import { searchApi, chatApi } from '@/services/api';
+import { getProviderKeys } from '@/services/providerKeys';
 
 export const useChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -9,6 +10,8 @@ export const useChat = () => {
 
   const sendMessage = useCallback(async (content: string) => {
     if (!content.trim() || isLoading) return;
+
+    const { provider, openAIKey } = getProviderKeys();
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -21,8 +24,8 @@ export const useChat = () => {
     setIsLoading(true);
 
     try {
-      // Search for relevant documents
-      const searchResults = await searchApi.search(content);
+      // Search for relevant documents (requires OpenAI key for embeddings)
+      const searchResults = openAIKey ? await searchApi.search(content) : [];
       
       // Create assistant message placeholder
       const assistantMessage: Message = {
@@ -56,17 +59,29 @@ export const useChat = () => {
         });
       }
 
-      // Get streaming response
-      await chatApi.streamMessage(chatMessages, (chunk) => {
+      if (provider === 'anthropic') {
+        const full = await chatApi.sendMessage(chatMessages);
         setMessages(prev => {
           const updated = [...prev];
           const lastMessage = updated[updated.length - 1];
           if (lastMessage.role === 'assistant') {
-            lastMessage.content += chunk;
+            lastMessage.content = full;
           }
           return updated;
         });
-      });
+      } else {
+        // Get streaming response
+        await chatApi.streamMessage(chatMessages, (chunk) => {
+          setMessages(prev => {
+            const updated = [...prev];
+            const lastMessage = updated[updated.length - 1];
+            if (lastMessage.role === 'assistant') {
+              lastMessage.content += chunk;
+            }
+            return updated;
+          });
+        });
+      }
     } catch (error) {
       console.error('Chat error:', error);
       

@@ -2,13 +2,11 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"os"
-	"strings"
 
-	_ "github.com/lib/pq"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -30,26 +28,11 @@ func main() {
 		log.Fatalf("failed to read migration file: %v", err)
 	}
 
-	statements := splitSQL(string(sqlBytes))
-	for _, stmt := range statements {
-		if strings.TrimSpace(stmt) == "" {
-			continue
-		}
-		if _, err := db.Exec(stmt); err != nil {
-			log.Fatalf("migration failed: %v\n---\n%s\n---", err, stmt)
-		}
+	// Execute the whole file at once.
+	// This avoids breaking on semicolons inside dollar-quoted function bodies (e.g. $$ ... $$).
+	if _, err := db.Exec(string(sqlBytes)); err != nil {
+		log.Fatalf("migration failed: %v", err)
 	}
 
-	fmt.Println("migrations applied")
+	log.Println("migrations applied")
 }
-
-// naive SQL splitter; good enough for our single migration file
-func splitSQL(input string) []string {
-	parts := strings.Split(input, ";")
-	out := make([]string, 0, len(parts))
-	for _, p := range parts {
-		out = append(out, p+";")
-	}
-	return out
-}
-

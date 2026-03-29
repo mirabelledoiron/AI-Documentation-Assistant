@@ -2,13 +2,17 @@
 package main
 
 import (
+	"context"
 	"log"
+	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/yourname/ai-documentation-assistant/internal/api"
 	"github.com/yourname/ai-documentation-assistant/internal/config"
 	"github.com/yourname/ai-documentation-assistant/internal/database"
+	"github.com/yourname/ai-documentation-assistant/internal/services"
 )
 
 func main() {
@@ -37,6 +41,40 @@ func main() {
 
 	// Setup API routes
 	api.SetupRoutes(router)
+
+	// Dev-only: seed the knowledge base from a configured GitHub repo on start.
+	// Runs in the background and skips if already seeded.
+	if cfg.Environment != "production" && cfg.Seed.AutoSeedOnStart {
+		openAIKey := strings.TrimSpace(cfg.OpenAI.APIKey)
+		if openAIKey != "" {
+			go func() {
+				ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
+				defer cancel()
+
+				res, err := services.SeedGitHubRepo(
+					ctx,
+					db.DB,
+					openAIKey,
+					cfg.OpenAI.EmbeddingModel,
+					cfg.Seed.GitHubOwner,
+					cfg.Seed.GitHubRepo,
+					cfg.Seed.DefaultRef,
+					cfg.Seed.DefaultLimit,
+				)
+				if err != nil {
+					log.Printf("Atelier seed failed: %v", err)
+					return
+				}
+				if res.AlreadySeeded {
+					log.Printf("Seed skipped (already seeded)")
+					return
+				}
+				log.Printf("Seed complete: imported=%d upserted=%d embedded=%d skipped=%d", res.Imported, res.Upserted, res.Embedded, res.Skipped)
+			}()
+		} else {
+			log.Printf("Seed skipped (OPENAI_API_KEY not set)")
+		}
+	}
 
 	// Start server
 	log.Printf("Starting server on port %s", cfg.Port)

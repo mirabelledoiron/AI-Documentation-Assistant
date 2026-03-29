@@ -74,7 +74,7 @@ This repo contains **two** `package.json` files:
     - `cd frontend && npm run build`
 
 - **Root `package.json` (optional tooling / separate Vite app)**:
-  - This is only for **repo-level tooling** (sometimes Storybook, linting, a separate demo app, etc).
+  - This is only for **repo-level tooling** (linting, a separate demo app, etc).
   - You use it when you run commands **from the repo root**:
     - `cd . && npm run dev`
     - `cd . && npm run build`
@@ -96,7 +96,7 @@ You will use the root Vite app **only if** you intentionally run root scripts an
 Yes, **if** all of these are true:
 - You never run `npm` commands from the repo root
 - CI doesn’t run root Node scripts
-- You don’t rely on root Storybook / root lint config
+- You don’t rely on root lint config
 
 If you’re unsure: keep it. It’s safe because it’s `"private": true`.
 
@@ -108,12 +108,11 @@ If you’re unsure: keep it. It’s safe because it’s `"private": true`.
 4. Document management interface
 5. Source citations in responses
 
-## How to Continue in Cursor:
+## How to Continue
 
 1. Create the folder structure above
-2. Use @ references in Cursor to ask about specific files
-3. Use "Cmd+Shift+L" to open chat with specific context
-4. Mention "following spec.md" in your prompts
+2. Use your editor’s “search in files” to jump between related code
+3. Mention "following spec.md" in your prompts
 
 ## Local Development Setup & Testing Guide
 

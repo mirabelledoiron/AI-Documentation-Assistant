@@ -1,29 +1,125 @@
 /* frontend/src/styles/globals.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    /* Atelier theme tokens (starter set; adjust to match Atelier exactly) */
+    /* App theme tokens (current light defaults) */
     --atelier-bg: 0 0% 100%;
     --atelier-fg: 222 47% 11%;
-
     --atelier-muted: 215 20% 65%;
     --atelier-muted-bg: 210 40% 98%;
-
     --atelier-border: 214 32% 91%;
-
-    --atelier-primary: 225 83% 53%;   /* blue */
-    --atelier-accent: 270 91% 65%;    /* purple */
-
+    --atelier-primary: 225 83% 53%;
+    --atelier-accent: 270 91% 65%;
     --atelier-radius: 0.75rem;
+
+    /* Atelier (storybook) token model — shadcn-style CSS vars */
+    --background: var(--atelier-bg);
+    --foreground: var(--atelier-fg);
+
+    --card: var(--atelier-muted-bg);
+    --card-foreground: var(--atelier-fg);
+
+    --popover: var(--atelier-muted-bg);
+    --popover-foreground: var(--atelier-fg);
+
+    --primary: var(--atelier-primary);
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: var(--atelier-accent);
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: var(--atelier-muted-bg);
+    --muted-foreground: var(--atelier-muted);
+
+    --accent: var(--atelier-muted-bg);
+    --accent-foreground: var(--atelier-fg);
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: var(--atelier-border);
+    --input: var(--atelier-border);
+    --ring: var(--atelier-primary);
+
+    --radius: var(--atelier-radius);
+
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  /* Optional Atelier dark theme (values sourced from the design system repo) */
+  .theme-atelier-dark {
+    --background: 240 28% 14%;
+    --foreground: 0 0% 100%;
+
+    --card: 220 47% 16%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 220 47% 16%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 351 80% 59%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 176 56% 55%;
+    --secondary-foreground: 240 28% 14%;
+
+    --muted: 218 39% 20%;
+    --muted-foreground: 218 11% 65%;
+
+    --accent: 218 39% 20%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 255 26% 33%;
+    --input: 255 26% 33%;
+    --ring: 351 80% 59%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 240 30% 11%;
+    --sidebar-foreground: 218 11% 65%;
+    --sidebar-primary: 351 80% 59%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 218 39% 20%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 255 26% 33%;
+    --sidebar-ring: 351 80% 59%;
+
+    --brand-primary-hover: 350 66% 54%;
+    --brand-primary-light: 345 83% 84%;
+    --brand-secondary-light: 176 55% 68%;
+    --brand-text-subtle: 220 9% 46%;
+    --brand-warning: 47 100% 62%;
+    --brand-surface-elevated: 218 39% 20%;
+
+    /* Keep existing `atelier.*` Tailwind palette working */
+    --atelier-bg: var(--background);
+    --atelier-fg: var(--foreground);
+    --atelier-muted: var(--muted-foreground);
+    --atelier-muted-bg: var(--muted);
+    --atelier-border: var(--border);
+    --atelier-primary: var(--primary);
+    --atelier-accent: var(--secondary);
+    --atelier-radius: var(--radius);
   }
 
   body {
     @apply antialiased;
     background: hsl(var(--atelier-bg));
     color: hsl(var(--atelier-fg));
+    font-family: var(--font-sans);
+  }
+
+  code, pre, .font-mono {
+    font-family: var(--font-mono);
   }
 }
 

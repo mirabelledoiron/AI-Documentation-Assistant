@@ -7,7 +7,7 @@ import { Toaster } from 'react-hot-toast';
 
 export const MainLayout: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background text-foreground">
       <Header />
       
       <div className="flex">
@@ -25,8 +25,8 @@ export const MainLayout: React.FC = () => {
         toastOptions={{
           duration: 4000,
           style: {
-            background: '#363636',
-            color: '#fff',
+            background: 'hsl(var(--card))',
+            color: 'hsl(var(--card-foreground))',
           },
           success: {
             duration: 3000,

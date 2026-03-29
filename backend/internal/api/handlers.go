@@ -1,6 +1,7 @@
 package api
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"net/http"
@@ -11,6 +12,18 @@ import (
 	"github.com/sashabaranov/go-openai"
 	"github.com/yourname/ai-documentation-assistant/internal/models"
 )
+
+func parseEmbeddingModel(model string) openai.EmbeddingModel {
+	if strings.TrimSpace(model) == "" {
+		return openai.AdaEmbeddingV2
+	}
+	var parsed openai.EmbeddingModel
+	_ = parsed.UnmarshalText([]byte(model))
+	if parsed == openai.Unknown {
+		return openai.AdaEmbeddingV2
+	}
+	return parsed
+}
 
 func healthCheckHandler(c *gin.Context) {
 	st := getState()
@@ -25,10 +38,28 @@ func healthCheckHandler(c *gin.Context) {
 	})
 }
 
+func respondServiceError(c *gin.Context, status int, message string, err error) {
+	st := getState()
+	if st != nil && st.cfg != nil && st.cfg.Environment != "production" && err != nil {
+		c.JSON(status, gin.H{"error": message, "details": err.Error()})
+		return
+	}
+	c.JSON(status, gin.H{"error": message})
+}
+
 func searchHandler(c *gin.Context) {
 	st := getState()
 	if st == nil || st.cfg == nil || st.db == nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Server not initialized"})
+		return
+	}
+	rp := getRequestProviderHeaders(c.GetHeader)
+	openAIKey := strings.TrimSpace(st.cfg.OpenAI.APIKey)
+	if rp.OpenAIKey != "" {
+		openAIKey = rp.OpenAIKey
+	}
+	if openAIKey == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "OpenAI API key is not configured"})
 		return
 	}
 
@@ -39,13 +70,13 @@ func searchHandler(c *gin.Context) {
 	}
 
 	// Get embeddings for the query
-	client := openai.NewClient(st.cfg.OpenAI.APIKey)
+	client := openai.NewClient(openAIKey)
 	embeddingResp, err := client.CreateEmbeddings(context.Background(), openai.EmbeddingRequest{
 		Input: req.Query,
-		Model: openai.AdaEmbeddingV2,
+		Model: parseEmbeddingModel(st.cfg.OpenAI.EmbeddingModel),
 	})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to process query"})
+		respondServiceError(c, http.StatusInternalServerError, "Failed to process query", err)
 		return
 	}
 
@@ -98,6 +129,20 @@ func chatHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Server not initialized"})
 		return
 	}
+	rp := getRequestProviderHeaders(c.GetHeader)
+	openAIKey := strings.TrimSpace(st.cfg.OpenAI.APIKey)
+	if rp.OpenAIKey != "" {
+		openAIKey = rp.OpenAIKey
+	}
+	anthropicKey := rp.AnthropicKey
+	if rp.Provider == "openai" && openAIKey == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "OpenAI API key is not configured"})
+		return
+	}
+	if rp.Provider == "anthropic" && anthropicKey == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Anthropic API key is not configured"})
+		return
+	}
 
 	var req models.ChatRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -109,7 +154,7 @@ func chatHandler(c *gin.Context) {
 	var searchResults []models.SearchResult
 	if len(req.Messages) > 0 {
 		lastMessage := req.Messages[len(req.Messages)-1].Content
-		results, err := performSearch(lastMessage, 3)
+		results, err := performSearchWithKey(openAIKey, lastMessage, 3)
 		if err == nil && len(results) > 0 {
 			searchResults = results
 			// Add context to messages
@@ -121,21 +166,31 @@ func chatHandler(c *gin.Context) {
 		}
 	}
 
-	client := openai.NewClient(st.cfg.OpenAI.APIKey)
-	resp, err := client.CreateChatCompletion(context.Background(), openai.ChatCompletionRequest{
-		Model:       openai.GPT3Dot5Turbo,
-		Messages:    convertMessages(req.Messages),
-		Temperature: 0.7,
-		MaxTokens:   1000,
-	})
-	
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Chat service unavailable"})
-		return
-	}
-
-	response := models.ChatResponse{
-		Message: resp.Choices[0].Message.Content,
+	response := models.ChatResponse{}
+	if rp.Provider == "anthropic" {
+		msg, err := anthropicChat(context.Background(), anthropicKey, req.Messages)
+		if err != nil {
+			respondServiceError(c, http.StatusInternalServerError, "Chat service unavailable", err)
+			return
+		}
+		response.Message = msg
+	} else {
+		model := strings.TrimSpace(st.cfg.OpenAI.Model)
+		if model == "" {
+			model = openai.GPT3Dot5Turbo
+		}
+		client := openai.NewClient(openAIKey)
+		resp, err := client.CreateChatCompletion(context.Background(), openai.ChatCompletionRequest{
+			Model:       model,
+			Messages:    convertMessages(req.Messages),
+			Temperature: 0.7,
+			MaxTokens:   1000,
+		})
+		if err != nil {
+			respondServiceError(c, http.StatusInternalServerError, "Chat service unavailable", err)
+			return
+		}
+		response.Message = resp.Choices[0].Message.Content
 	}
 
 	// Log for analytics (query = last user message, response = assistant message)
@@ -157,6 +212,19 @@ func chatStreamHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Server not initialized"})
 		return
 	}
+	rp := getRequestProviderHeaders(c.GetHeader)
+	if rp.Provider == "anthropic" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Streaming is not supported for Anthropic in this endpoint"})
+		return
+	}
+	openAIKey := strings.TrimSpace(st.cfg.OpenAI.APIKey)
+	if rp.OpenAIKey != "" {
+		openAIKey = rp.OpenAIKey
+	}
+	if openAIKey == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "OpenAI API key is not configured"})
+		return
+	}
 
 	var req models.ChatRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -168,13 +236,13 @@ func chatStreamHandler(c *gin.Context) {
 	c.Header("Cache-Control", "no-cache")
 	c.Header("Connection", "keep-alive")
 
-	client := openai.NewClient(st.cfg.OpenAI.APIKey)
-	
+	client := openai.NewClient(openAIKey)
+
 	// Add search context
 	var searchResults []models.SearchResult
 	if len(req.Messages) > 0 {
 		lastMessage := req.Messages[len(req.Messages)-1].Content
-		results, err := performSearch(lastMessage, 3)
+		results, err := performSearchWithKey(openAIKey, lastMessage, 3)
 		if err == nil && len(results) > 0 {
 			searchResults = results
 			context := formatSearchContext(searchResults)
@@ -185,21 +253,25 @@ func chatStreamHandler(c *gin.Context) {
 		}
 	}
 
+	model := strings.TrimSpace(st.cfg.OpenAI.Model)
+	if model == "" {
+		model = openai.GPT3Dot5Turbo
+	}
 	stream, err := client.CreateChatCompletionStream(context.Background(), openai.ChatCompletionRequest{
-		Model:       openai.GPT3Dot5Turbo,
+		Model:       model,
 		Messages:    convertMessages(req.Messages),
 		Temperature: 0.7,
 		MaxTokens:   1000,
 		Stream:      true,
 	})
-	
+
 	if err != nil {
-		c.SSEvent("error", gin.H{"message": err.Error()})
+		c.SSEvent("error", gin.H{"message": "Chat service unavailable", "details": err.Error()})
 		return
 	}
 	defer stream.Close()
 
-	var streamed strings.Builder
+	var streamed bytes.Buffer
 
 	for {
 		response, err := stream.Recv()
@@ -245,21 +317,21 @@ func listDocumentsHandler(c *gin.Context) {
 	}
 	var documents []models.Document
 	var total int64
-	
+
 	page := c.DefaultQuery("page", "1")
 	limit := c.DefaultQuery("limit", "10")
-	
+
 	// Convert to int
 	pageInt := 1
 	limitInt := 10
 	fmt.Sscanf(page, "%d", &pageInt)
 	fmt.Sscanf(limit, "%d", &limitInt)
-	
+
 	offset := (pageInt - 1) * limitInt
-	
+
 	st.db.Model(&models.Document{}).Count(&total)
 	st.db.Offset(offset).Limit(limitInt).Find(&documents)
-	
+
 	c.JSON(http.StatusOK, models.DocumentListResponse{
 		Documents: documents,
 		Total:     total,
@@ -274,6 +346,10 @@ func createDocumentHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Server not initialized"})
 		return
 	}
+	if strings.TrimSpace(st.cfg.OpenAI.APIKey) == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "OPENAI_API_KEY is not configured"})
+		return
+	}
 	var doc models.Document
 	if err := c.ShouldBindJSON(&doc); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid document data"})
@@ -284,10 +360,10 @@ func createDocumentHandler(c *gin.Context) {
 	client := openai.NewClient(st.cfg.OpenAI.APIKey)
 	embeddingResp, err := client.CreateEmbeddings(context.Background(), openai.EmbeddingRequest{
 		Input: doc.Content,
-		Model: openai.AdaEmbeddingV2,
+		Model: parseEmbeddingModel(st.cfg.OpenAI.EmbeddingModel),
 	})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate embedding"})
+		respondServiceError(c, http.StatusInternalServerError, "Failed to generate embedding", err)
 		return
 	}
 
@@ -301,7 +377,7 @@ func createDocumentHandler(c *gin.Context) {
 		DocumentID: doc.ID,
 		Vector:     embeddingResp.Data[0].Embedding,
 	}
-	
+
 	if err := st.db.Create(&embedding).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create embedding"})
 		return
@@ -317,12 +393,12 @@ func deleteDocumentHandler(c *gin.Context) {
 		return
 	}
 	id := c.Param("id")
-	
+
 	if err := st.db.Delete(&models.Document{}, id).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Document not found"})
 		return
 	}
-	
+
 	c.JSON(http.StatusOK, gin.H{"message": "Document deleted"})
 }
 
@@ -337,15 +413,90 @@ func popularQueriesHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"queries": queries})
 }
 
-func performSearch(query string, limit int) ([]models.SearchResult, error) {
+type reindexRequest struct {
+	Limit int `json:"limit"`
+}
+
+// reindexEmbeddingsHandler backfills embeddings for documents that don't have one yet.
+// This is mainly to make seeded/local dev docs searchable without requiring re-upload.
+func reindexEmbeddingsHandler(c *gin.Context) {
+	st := getState()
+	if st == nil || st.cfg == nil || st.db == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Server not initialized"})
+		return
+	}
+	if strings.TrimSpace(st.cfg.OpenAI.APIKey) == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "OPENAI_API_KEY is not configured"})
+		return
+	}
+
+	var req reindexRequest
+	_ = c.ShouldBindJSON(&req)
+	limit := req.Limit
+	if limit <= 0 || limit > 500 {
+		limit = 100
+	}
+
+	// Find documents missing embeddings
+	var docs []models.Document
+	err := st.db.Raw(`
+		SELECT d.*
+		FROM documents d
+		LEFT JOIN embeddings e ON e.document_id = d.id
+		WHERE e.id IS NULL
+		ORDER BY d.created_at ASC
+		LIMIT ?
+	`, limit).Scan(&docs).Error
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to load documents", "details": err.Error()})
+		return
+	}
+
+	client := openai.NewClient(st.cfg.OpenAI.APIKey)
+	indexed := 0
+	for _, doc := range docs {
+		text := strings.TrimSpace(doc.Content)
+		if text == "" {
+			continue
+		}
+		embeddingResp, err := client.CreateEmbeddings(context.Background(), openai.EmbeddingRequest{
+			Input: text,
+			Model: parseEmbeddingModel(st.cfg.OpenAI.EmbeddingModel),
+		})
+		if err != nil || len(embeddingResp.Data) == 0 {
+			respondServiceError(c, http.StatusInternalServerError, "Failed to generate embedding", err)
+			return
+		}
+
+		embedding := models.Embedding{
+			DocumentID: doc.ID,
+			Vector:     embeddingResp.Data[0].Embedding,
+		}
+		if err := st.db.Create(&embedding).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to store embedding", "document_id": doc.ID})
+			return
+		}
+		indexed++
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"indexed":   indexed,
+		"attempted": len(docs),
+	})
+}
+
+func performSearchWithKey(openAIKey string, query string, limit int) ([]models.SearchResult, error) {
 	st := getState()
 	if st == nil || st.cfg == nil || st.db == nil {
 		return nil, fmt.Errorf("server not initialized")
 	}
-	client := openai.NewClient(st.cfg.OpenAI.APIKey)
+	if strings.TrimSpace(openAIKey) == "" {
+		return nil, fmt.Errorf("OpenAI API key is not configured")
+	}
+	client := openai.NewClient(openAIKey)
 	embeddingResp, err := client.CreateEmbeddings(context.Background(), openai.EmbeddingRequest{
 		Input: query,
-		Model: openai.AdaEmbeddingV2,
+		Model: parseEmbeddingModel(st.cfg.OpenAI.EmbeddingModel),
 	})
 	if err != nil {
 		return nil, err
@@ -380,16 +531,16 @@ func performSearch(query string, limit int) ([]models.SearchResult, error) {
 }
 
 func formatSearchContext(results []models.SearchResult) string {
-	var context strings.Builder
+	var buf bytes.Buffer
 	for i, result := range results {
 		contentPreview := result.Document.Content
 		if len(contentPreview) > 200 {
 			contentPreview = contentPreview[:200]
 		}
-		context.WriteString(fmt.Sprintf("Document %d: %s\n%s\n\n", 
+		buf.WriteString(fmt.Sprintf("Document %d: %s\n%s\n\n",
 			i+1, result.Document.Title, contentPreview))
 	}
-	return context.String()
+	return buf.String()
 }
 
 func convertMessages(messages []models.Message) []openai.ChatCompletionMessage {
