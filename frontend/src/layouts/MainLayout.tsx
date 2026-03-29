@@ -8,20 +8,20 @@ import { Toaster } from 'react-hot-toast';
 
 export const MainLayout: React.FC = () => {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header />
-      
-      <div className="flex">
-        <Sidebar />
-        
-        <main className="flex-1 p-6">
-          <div className="max-w-7xl mx-auto">
+    <div className="flex min-h-screen bg-background text-foreground">
+      <Sidebar />
+
+      <div className="flex-1 flex flex-col min-h-screen">
+        <Header />
+
+        <main className="flex-1 px-8 pb-8">
+          <div className="max-w-5xl mx-auto">
             <Outlet />
           </div>
         </main>
+
+        <Footer />
       </div>
-      
-      <Footer />
 
       <Toaster
         position="top-right"
@@ -33,17 +33,11 @@ export const MainLayout: React.FC = () => {
           },
           success: {
             duration: 3000,
-            iconTheme: {
-              primary: '#10B981',
-              secondary: '#fff',
-            },
+            iconTheme: { primary: '#10B981', secondary: '#fff' },
           },
           error: {
             duration: 4000,
-            iconTheme: {
-              primary: '#EF4444',
-              secondary: '#fff',
-            },
+            iconTheme: { primary: '#EF4444', secondary: '#fff' },
           },
         }}
       />

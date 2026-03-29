@@ -3,10 +3,10 @@ type FooterProps = Record<string, never>;
 
 export default function Footer(_props: FooterProps) {
     return (
-    <footer className="w-full border-t border-border py-6 px-8">
+    <footer className="w-full py-6 px-8">
       <div className="flex items-center justify-between max-w-5xl mx-auto">
         <p className="text-sm text-muted-foreground">
-          {"© 2026 Mirabelle Doiron"}
+         {"© 2026 Mirabelle Doiron. All rights reserved."}
         </p>
 
         <div className="flex items-center gap-5">

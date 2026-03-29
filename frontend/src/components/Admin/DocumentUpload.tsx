@@ -52,10 +52,10 @@ export const DocumentUpload: React.FC = () => {
   return (
     <div className="w-full max-w-2xl mx-auto p-6">
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
           <Upload className="w-6 h-6 text-primary" />
           Upload Documentation
-        </h2>
+        </h1>
         <p className="text-muted-foreground mt-1">Add new documentation to the AI assistant's knowledge base</p>
       </div>
 

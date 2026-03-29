@@ -1,6 +1,5 @@
 // frontend/src/components/ChatInterface.tsx
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Message, SearchResult, ChatCompletionMessage } from '@/types';
 import { searchApi, chatApi } from '@/services/api';
 import { getProviderKeys } from '@/services/providerKeys';
@@ -181,23 +180,18 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ className = '' }) 
   return (
     <Card className={cn('flex flex-col h-full overflow-hidden', className)}>
       <div className="flex-shrink-0 px-4 py-3 border-b border-border bg-card">
-        <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
+        <h1 className="text-base font-semibold text-foreground flex items-center gap-2">
           <Bot className="w-4 h-4 text-primary" />
           AI-Powered Documentation Assistant
-        </h2>
+        </h1>
         <p className="text-sm text-muted-foreground mt-1">
           Ask me anything about the design system
         </p>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-background">
-        <AnimatePresence>
           {messages.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="py-6"
-            >
+            <div className="py-6">
               <div className="max-w-xl">
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-2 mb-2">
@@ -226,14 +220,12 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ className = '' }) 
                 />
                 </div>
               </div>
-            </motion.div>
+            </div>
           )}
 
           {messages.map((message) => (
-            <motion.div
+            <div
               key={message.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
               className={`flex gap-3 ${message.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
             >
               <div className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center ${
@@ -302,9 +294,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ className = '' }) 
                   {formatTime(message.timestamp)}
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </AnimatePresence>
         
         <div ref={messagesEndRef} />
       </div>

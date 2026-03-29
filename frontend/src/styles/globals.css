@@ -21,10 +21,10 @@
     --background: var(--atelier-bg);
     --foreground: var(--atelier-fg);
 
-    --card: var(--atelier-muted-bg);
+    --card: var(--atelier-bg);
     --card-foreground: var(--atelier-fg);
 
-    --popover: var(--atelier-muted-bg);
+    --popover: var(--atelier-bg);
     --popover-foreground: var(--atelier-fg);
 
     --primary: var(--atelier-primary);

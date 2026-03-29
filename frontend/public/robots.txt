@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ai-docs.mirabelledoiron.com/sitemap.xml
