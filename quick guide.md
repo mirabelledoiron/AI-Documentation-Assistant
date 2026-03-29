@@ -92,6 +92,31 @@ Supabase is Postgres. To connect the backend:
   - `DATABASE_URL=<your Supabase connection string>`
   - For Supabase you typically need SSL: add `?sslmode=require` to the URL if it’s not already there.
 
+## 9) Deploying (Vercel + hosted backend + Supabase)
+
+Important: Vercel can host the **frontend only**. The Go backend must be hosted separately (Fly.io/Render/Railway/etc).
+
+### Frontend on Vercel
+In Vercel project settings:
+- **Root Directory**: `frontend`
+- **Build Command**: `npm run build`
+- **Output Directory**: `dist`
+
+Environment Variables (Vercel):
+- `VITE_API_URL=https://YOUR_BACKEND_DOMAIN/api`
+
+SPA routing:
+- This repo includes `frontend/vercel.json` to rewrite routes to `index.html` (so refresh on `/chat`, `/analytics`, etc works).
+
+### Backend + Supabase
+Backend environment variables (wherever you host the Go API):
+- `DATABASE_URL=postgres://... (Supabase, usually with sslmode=require)`
+- `OPENAI_API_KEY=...`
+- `CORS_ORIGINS=https://YOUR_VERCEL_DOMAIN`
+
+### Security note
+Never put Supabase DB credentials into frontend env vars.
+
 ## 5) The two “gotchas” you hit (so you remember)
 
 - `docker-compose` not found → use **`docker compose`** (space) on new Docker Desktop
