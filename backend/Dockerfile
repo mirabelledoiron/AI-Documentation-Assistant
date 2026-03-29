@@ -6,7 +6,12 @@ WORKDIR /app
 RUN apk add --no-cache ca-certificates git
 
 COPY go.mod go.sum ./
-RUN go mod download
+# Make dependency download failures easier to diagnose in Render logs
+ENV GOPROXY=https://proxy.golang.org,direct
+ENV GOSUMDB=sum.golang.org
+RUN go version
+RUN go env
+RUN go mod download -x
 
 COPY . .
 

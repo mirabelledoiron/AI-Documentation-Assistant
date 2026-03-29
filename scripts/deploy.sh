@@ -2,7 +2,7 @@
 
 set -e
 
-echo "🚀 Deploying AI Documentation Assistant..."
+echo "🚀 Deploying AI-Powered Documentation Assistant..."
 
 # Build backend
 echo "📦 Building backend..."

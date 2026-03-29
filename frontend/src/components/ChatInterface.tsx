@@ -144,7 +144,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ className = '' }) 
       <div className="flex-shrink-0 p-4 border-b border-gray-200">
         <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
           <Bot className="w-5 h-5 text-blue-600" />
-          AI Documentation Assistant
+          AI-Powered Documentation Assistant
         </h2>
         <p className="text-sm text-gray-600 mt-1">
           Ask me anything about the design system
@@ -161,7 +161,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ className = '' }) 
             >
               <Bot className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-700 mb-2">
-                Welcome to AI Documentation Assistant
+                Welcome to AI-Powered Documentation Assistant
               </h3>
               <p className="text-gray-600 mb-6">
                 I can help you find information about design components, patterns, and guidelines.

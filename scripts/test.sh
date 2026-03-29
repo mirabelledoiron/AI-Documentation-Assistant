@@ -3,7 +3,7 @@ set -e
 
 API_BASE="${API_BASE:-http://localhost:8080/api}"
 
-echo "Testing AI Documentation Assistant..."
+echo "Testing AI-Powered Documentation Assistant..."
 
 echo "1) Testing ${API_BASE}/health"
 code=$(curl -s -o /dev/null -w "%{http_code}" "${API_BASE}/health")

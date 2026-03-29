@@ -2,7 +2,7 @@
 .PHONY: help build run test clean deploy
 
 help:
-	@echo "📦 AI Documentation Assistant"
+	@echo "📦 AI-Powered Documentation Assistant"
 	@echo "============================="
 	@echo ""
 	@echo "Commands:"

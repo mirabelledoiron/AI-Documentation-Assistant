@@ -1,4 +1,4 @@
-# AI Documentation Assistant - Complete Specification
+# AI-Powered Documentation Assistant - Complete Specification
 
 ## Project Structure
 
@@ -213,7 +213,7 @@ npm run dev
 # Open browser at http://localhost:5173
 ```
 
-## How to use the AI Documentation Assistant (day-to-day)
+## How to use the AI-Powered Documentation Assistant (day-to-day)
 
 1. **Start the stack**
    - Start Postgres (`docker compose ...`)
@@ -295,7 +295,7 @@ Create a simple test script (`test.sh`):
 
 ```bash
 #!/bin/bash
-echo "Testing AI Documentation Assistant..."
+echo "Testing AI-Powered Documentation Assistant..."
 
 # Test 1: Health Check
 echo "1. Testing /api/health"

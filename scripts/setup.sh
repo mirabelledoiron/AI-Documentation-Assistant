@@ -1,7 +1,7 @@
 #!/bin/bash
 # scripts/setup.sh
 
-echo "Setting up AI Documentation Assistant..."
+echo "Setting up AI-Powered Documentation Assistant..."
 
 # Create necessary directories
 mkdir -p backend/logs

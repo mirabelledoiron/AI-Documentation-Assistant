@@ -10,7 +10,7 @@ export function Landing() {
             Atelier Design System
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">
-            Mirabelle's AI Documentation Assistant
+            AI-Powered Documentation Assistant
           </h1>
           <p className="mt-3 text-gray-700 text-base sm:text-lg">
             Centralize your design system knowledge in one place. Upload documentation, run semantic search,

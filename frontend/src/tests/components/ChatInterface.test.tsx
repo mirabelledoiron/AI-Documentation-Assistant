@@ -26,7 +26,7 @@ describe('ChatInterface', () => {
 
   it('renders initial welcome screen', () => {
     render(<ChatInterface />);
-    expect(screen.getByText(/Welcome to AI Documentation Assistant/i)).toBeInTheDocument();
+    expect(screen.getByText(/Welcome to AI-Powered Documentation Assistant/i)).toBeInTheDocument();
   });
 
   it('sends a message when form is submitted', async () => {
