@@ -81,4 +81,4 @@ Built by [Mirabelle Doiron](https://www.mirabelledoiron.com/)
 
 ## License
 
-MIT
+All rights reserved. This project is the intellectual property of Mirabelle Doiron and is shared as a portfolio piece. It may not be copied, forked, redistributed, or used as a template without explicit written permission.
