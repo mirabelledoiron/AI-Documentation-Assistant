@@ -1,13 +1,13 @@
 {
-  "name": "design-system-ai",
+  "name": "ai-documentation-assistant-root",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "node -e \"console.log('Run: cd frontend && npm run dev'); process.exit(1)\"",
+    "build": "npm --prefix frontend run build",
+    "lint": "npm --prefix frontend run lint",
+    "preview": "npm --prefix frontend run preview"
   },
   "dependencies": {
     "lucide-react": "^0.539.0",

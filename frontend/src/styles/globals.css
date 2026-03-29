@@ -1,0 +1,111 @@
+/* frontend/src/styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+  }
+
+  body {
+    @apply antialiased text-gray-800;
+  }
+}
+
+@layer utilities {
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+  
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
+}
+
+/* Custom animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Markdown-like styles for chat content */
+.chat-content {
+  & h1, & h2, & h3, & h4 {
+    @apply font-bold mt-4 mb-2;
+  }
+  
+  & h1 { @apply text-2xl; }
+  & h2 { @apply text-xl; }
+  & h3 { @apply text-lg; }
+  
+  & p {
+    @apply my-2;
+  }
+  
+  & ul, & ol {
+    @apply my-2 pl-5;
+  }
+  
+  & ul {
+    @apply list-disc;
+  }
+  
+  & ol {
+    @apply list-decimal;
+  }
+  
+  & code {
+    @apply bg-gray-100 px-2 py-1 rounded text-sm font-mono;
+  }
+  
+  & pre {
+    @apply bg-gray-900 text-gray-100 p-3 rounded-md my-2 overflow-x-auto;
+  }
+  
+  & a {
+    @apply text-blue-600 hover:text-blue-800 underline;
+  }
+  
+  & blockquote {
+    @apply border-l-4 border-gray-300 pl-4 italic my-2 text-gray-600;
+  }
+}

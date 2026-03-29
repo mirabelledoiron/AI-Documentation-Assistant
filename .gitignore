@@ -1,36 +1,70 @@
+# Dependencies
+node_modules/
+jspm_packages/
+*.iml
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
 # Logs
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-deployment
-*.local
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# dotenv environment variables file
 .env
+.env.production
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-*storybook.log
-storybook-static
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-# files to ignore for deployment
-DEPLOYMENT.md
-ENV_SETUP.md
-SETUP_GUIDE.md
-AI_SETUP.md
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
+# Go
+bin/
+dist/
+tmp/
+.out/
+*.exe
+*.test
+
+# Temporary
+tmp/
+temp/
+
+# Docker
+docker-data/
