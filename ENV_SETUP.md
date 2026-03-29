@@ -15,7 +15,7 @@ To enable AI-powered code generation in your design system, you need to set up y
 Create a `.env` file in your project root with:
 
 ```env
-REACT_APP_CLAUDE_API_KEY=your_actual_api_key_here
+VITE_CLAUDE_API_KEY=your_actual_api_key_here
 ```
 
 **Important**: Replace `your_actual_api_key_here` with your real API key from step 1.
@@ -36,7 +36,7 @@ After creating the `.env` file:
 
 ## Troubleshooting
 
-- **"No Claude API key found"**: Make sure your `.env` file exists and has the correct variable name
+- **"No Claude API key found"**: Make sure your `.env` file exists and has the correct variable name `VITE_CLAUDE_API_KEY`
 - **API errors**: Check that your API key is valid and has sufficient credits
 - **Environment variable not loading**: Restart your dev server after creating the `.env` file
 

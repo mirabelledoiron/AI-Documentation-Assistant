@@ -20,27 +20,27 @@ const App = () => {
     <div className="min-h-screen bg-brand-50">
       {/* Header */}
       <header className="bg-white border-b border-brand-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
-              <Bot className="h-8 w-8 text-brand-600" />
-              <h1 className="text-xl font-bold text-brand-900">Mirabelle's Design System</h1>
+              <Bot className="w-8 h-8 text-accent-700" />
+              <h1 className="text-xl font-bold text-accent-700">Mirabelle's Design System</h1>
               {isGenerating && (
-                <div className="flex items-center space-x-2 px-3 py-1 bg-brand-100 text-brand-800 rounded-full text-sm">
-                  <div className="w-2 h-2 bg-brand-600 rounded-full animate-pulse"></div>
+                <div className="flex items-center px-3 py-1 space-x-2 text-sm rounded-full bg-brand-100 text-accent-700">
+                  <div className="w-2 h-2 rounded-full animate-pulse bg-brand-600"></div>
                   <span>AI Working...</span>
                 </div>
               )}
             </div>
             <div className="flex items-center space-x-4">
-              <div className="text-sm text-brand-600">
+              <div className="text-sm text-accent-700">
                 Built by Mirabelle with Claude AI
               </div>
-              <button className="p-2 text-brand-400 hover:text-brand-600">
-                <Settings className="h-5 w-5" />
+              <button className="p-2 text-brand-400 hover:text-accent-700">
+                <Settings className="w-5 h-5" />
               </button>
-              <div className="h-8 w-8 bg-brand-600 rounded-full flex items-center justify-center">
-                <span className="text-white text-sm font-medium">AI</span>
+              <div className="flex justify-center items-center w-8 h-8 rounded-full bg-brand-700">
+                <span className="text-sm font-medium text-white">AI</span>
               </div>
             </div>
           </div>
@@ -49,7 +49,7 @@ const App = () => {
 
       {/* Navigation */}
       <nav className="bg-white border-b border-brand-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="flex space-x-8">
             {tabs.map((tab) => {
               const Icon = tab.icon;
@@ -57,13 +57,13 @@ const App = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${
+                  className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-lg text-accent-700 ${
                     activeTab === tab.id
-                      ? 'border-brand-500 text-brand-600'
-                      : 'border-transparent text-brand-500 hover:text-brand-700 hover:border-brand-300'
+                      ? 'border-brand-500 text-accent-700'
+                      : 'border-transparent text-brand-500 hover:text-brand-700 hover:border-brand-800'
                   }`}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="w-4 h-4" />
                   <span>{tab.label}</span>
                 </button>
               );
@@ -73,8 +73,8 @@ const App = () => {
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {activeTab === 'dashboard' && <Dashboard />}
+      <main className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
+      {activeTab === 'dashboard' && <Dashboard onNavigate={setActiveTab} />}
         {activeTab === 'components' && <ComponentLibrary isGenerating={isGenerating} setIsGenerating={setIsGenerating} />}
         {activeTab === 'generator' && <CodeGenerator isGenerating={isGenerating} setIsGenerating={setIsGenerating} />}
         {activeTab === 'tokens' && <DesignTokens />}

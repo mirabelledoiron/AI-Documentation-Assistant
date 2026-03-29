@@ -32,7 +32,7 @@ Create a `.env` file in the root directory:
 REACT_APP_CLAUDE_API_KEY=your_claude_api_key_here
 
 # Storybook URL (optional - can be set in the service)
-REACT_APP_STORYBOOK_URL=https://your-storybook-url.com
+REACT_APP_STORYBOOK_URL=https://687bba4d795507daa442f549-cgildnerdh.chromatic.com
 ```
 
 ### Connecting to Storybook

@@ -7,7 +7,7 @@ const DesignTokens: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  const categories = ['all', 'colors', 'spacing', 'typography', 'borders', 'shadows'];
+  const categories = ['all', 'colors', 'spacing', 'typography', 'borders'];
 
   const filteredTokens = designTokens.filter(token => {
     const matchesSearch = token.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -39,7 +39,7 @@ const DesignTokens: React.FC = () => {
       case 'colors':
         return (
           <div 
-            className="w-10 h-10 rounded-lg border-2 border-brand-200 shadow-sm"
+            className="w-10 h-10 rounded-lg border-2 border-brand-200"
             style={{ backgroundColor: token.value }}
           />
         );
@@ -47,16 +47,16 @@ const DesignTokens: React.FC = () => {
         return (
           <div className="flex items-center">
             <div 
-              className="bg-brand-500 h-5 rounded"
+              className="h-5 rounded bg-brand-500"
               style={{ width: token.value }}
             />
-            <span className="ml-3 text-xs text-brand-500 font-mono">{token.value}</span>
+            <span className="ml-3 font-mono text-xs text-brand-500">{token.value}</span>
           </div>
         );
       case 'typography':
         return (
           <div 
-            className="text-brand-900 font-medium"
+            className="font-medium text-brand-900"
             style={{ 
               fontSize: token.value.split('/')[0],
               lineHeight: token.value.split('/')[1]
@@ -68,51 +68,50 @@ const DesignTokens: React.FC = () => {
       case 'borders':
         return (
           <div 
-            className="w-10 h-10 border-2 border-brand-400 bg-white"
+            className="w-10 h-10 bg-white border-2 border-brand-400"
             style={{ borderRadius: token.value }}
           />
         );
       case 'shadows':
         return (
           <div 
-            className="w-10 h-10 bg-white border border-brand-200 rounded-lg"
-            style={{ boxShadow: token.value }}
+            className="w-10 h-10 bg-white rounded-lg border border-brand-200"
           />
         );
       default:
-        return <div className="w-10 h-10 bg-brand-100 rounded-lg border border-brand-200" />;
+        return <div className="w-10 h-10 rounded-lg border bg-brand-100 border-brand-200" />;
     }
   };
 
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-3xl font-bold text-brand-900">Design Tokens</h2>
-          <p className="text-brand-600 mt-2">Your design system's foundational values</p>
+          <p className="mt-2 text-brand-600">Your design system's foundational values</p>
         </div>
-        <button className="px-6 py-3 bg-brand-600 text-white rounded-xl hover:bg-brand-700 flex items-center justify-center space-x-3 transition-all duration-200 font-semibold shadow-sm hover:shadow-md">
-          <Plus className="h-5 w-5" />
+        <button className="flex justify-center items-center px-6 py-3 space-x-3 font-semibold text-white rounded-xl transition-all duration-200 bg-brand-600 hover:bg-brand-700">
+          <Plus className="w-5 h-5" />
           <span>Add Token</span>
         </button>
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-6 rounded-xl border border-brand-200 shadow-sm">
-        <div className="flex flex-col sm:flex-row gap-4">
+      <div className="p-6 bg-white rounded-xl border border-brand-200">
+        <div className="flex flex-col gap-4 sm:flex-row">
           <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-brand-400 h-5 w-5" />
+            <Search className="absolute left-4 top-1/2 w-5 h-5 transform -translate-y-1/2 text-brand-400" />
             <input
               type="text"
               placeholder="Search tokens..."
-              className="w-full pl-12 pr-4 py-3 border border-brand-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all duration-200 text-brand-900 placeholder-brand-400"
+              className="py-3 pr-4 pl-12 w-full rounded-xl border transition-all duration-200 border-brand-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent text-brand-900 placeholder-brand-400"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
           <select 
-            className="px-4 py-3 border border-brand-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all duration-200 text-brand-900 bg-white font-medium"
+            className="px-4 py-3 font-medium bg-white rounded-xl border transition-all duration-200 border-brand-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent text-brand-900"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
@@ -127,16 +126,16 @@ const DesignTokens: React.FC = () => {
 
       {/* Token Groups */}
       {Object.entries(groupedTokens).map(([category, tokens]) => (
-        <div key={category} className="bg-white rounded-xl border border-brand-200 shadow-sm overflow-hidden">
+        <div key={category} className="overflow-hidden bg-white rounded-xl border border-brand-200">
           <div className="p-6 border-b border-brand-200 bg-brand-50">
-            <h3 className="text-xl font-semibold text-brand-900 capitalize">
+            <h3 className="text-xl font-semibold capitalize text-brand-900">
               {category} ({tokens.length})
             </h3>
           </div>
           <div className="p-6">
             <div className="space-y-4">
               {tokens.map((token, index) => (
-                <div key={index} className="flex items-center justify-between p-4 bg-brand-50 rounded-xl hover:bg-brand-100 transition-all duration-200 border border-brand-100">
+                <div key={index} className="flex justify-between items-center p-4 rounded-xl border transition-all duration-200 bg-brand-50 hover:bg-brand-100 border-brand-100">
                   <div className="flex items-center space-x-4">
                     {renderTokenPreview(token)}
                     <div>
@@ -147,7 +146,7 @@ const DesignTokens: React.FC = () => {
                   
                   <div className="flex items-center space-x-3">
                     {token.usage && (
-                      <div className="text-right mr-4">
+                      <div className="mr-4 text-right">
                         <p className="text-sm font-semibold text-brand-900">{token.usage}%</p>
                         <p className="text-xs text-brand-600">usage</p>
                       </div>
@@ -155,18 +154,18 @@ const DesignTokens: React.FC = () => {
                     
                     <button
                       onClick={() => copyToken(token.name)}
-                      className="p-2 text-brand-400 hover:text-brand-600 hover:bg-brand-100 rounded-lg transition-all duration-200"
+                      className="p-2 rounded-lg transition-all duration-200 text-brand-400 hover:text-brand-600 hover:bg-brand-100"
                       title="Copy token"
                     >
-                      <Copy className="h-4 w-4" />
+                      <Copy className="w-4 h-4" />
                     </button>
                     
-                    <button className="p-2 text-brand-400 hover:text-green-600 hover:bg-green-100 rounded-lg transition-all duration-200">
-                      <Edit className="h-4 w-4" />
+                    <button className="p-2 rounded-lg transition-all duration-200 text-brand-400 hover:text-green-600 hover:bg-green-100">
+                      <Edit className="w-4 h-4" />
                     </button>
                     
-                    <button className="p-2 text-brand-400 hover:text-red-600 hover:bg-red-100 rounded-lg transition-all duration-200">
-                      <Trash2 className="h-4 w-4" />
+                    <button className="p-2 rounded-lg transition-all duration-200 text-brand-400 hover:text-red-600 hover:bg-red-100">
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
@@ -177,12 +176,12 @@ const DesignTokens: React.FC = () => {
       ))}
 
       {/* Usage Guidelines */}
-      <div className="bg-white p-8 rounded-xl border border-brand-200 shadow-sm">
-        <h3 className="text-xl font-semibold text-brand-900 mb-6">Token Usage Guidelines</h3>
+      <div className="p-8 bg-white rounded-xl border border-brand-200">
+        <h3 className="mb-6 text-xl font-semibold text-brand-900">Token Usage Guidelines</h3>
         <div className="space-y-6 text-brand-700">
           <div>
-            <h4 className="font-semibold text-brand-900 mb-3">CSS Custom Properties</h4>
-            <div className="bg-brand-900 text-green-400 p-4 rounded-xl font-mono text-sm border border-brand-800">
+            <h4 className="mb-3 font-semibold text-brand-900">CSS Custom Properties</h4>
+            <div className="p-4 font-mono text-sm text-green-400 rounded-xl border bg-brand-900 border-brand-800">
               <div>/* Use tokens as CSS custom properties */</div>
               <div>color: var(--color-primary-500);</div>
               <div>margin: var(--spacing-md);</div>
@@ -191,8 +190,8 @@ const DesignTokens: React.FC = () => {
           </div>
           
           <div>
-            <h4 className="font-semibold text-brand-900 mb-3">Tailwind Configuration</h4>
-            <div className="bg-brand-900 text-green-400 p-4 rounded-xl font-mono text-sm border border-brand-800">
+            <h4 className="mb-3 font-semibold text-brand-900">Tailwind Configuration</h4>
+            <div className="p-4 font-mono text-sm text-green-400 rounded-xl border bg-brand-900 border-brand-800">
               <div>// tailwind.config.js</div>
               <div>theme: {`{`}</div>
               <div>  extend: {`{`}</div>
@@ -207,7 +206,7 @@ const DesignTokens: React.FC = () => {
           </div>
           
           <div>
-            <h4 className="font-semibold text-brand-900 mb-3">Best Practices</h4>
+            <h4 className="mb-3 font-semibold text-brand-900">Best Practices</h4>
             <ul className="space-y-2 list-disc list-inside">
               <li>Use semantic naming conventions (primary, secondary vs blue, red)</li>
               <li>Maintain consistent scales for spacing and typography</li>

@@ -15,7 +15,7 @@ class AIService {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": process.env.REACT_APP_CLAUDE_API_KEY || "",
+          "x-api-key": import.meta.env.VITE_CLAUDE_API_KEY || "",
           "anthropic-version": "2023-06-01"
         },
         body: JSON.stringify({
@@ -40,8 +40,15 @@ class AIService {
   }
 
   async generateComponentCode({ componentName, framework, styling, componentDetails }: EnhancedCodeGenerationRequest): Promise<string> {
+    // Debug: Log environment variable status
+    console.log('Environment check:', {
+      hasApiKey: !!import.meta.env.VITE_CLAUDE_API_KEY,
+      apiKeyLength: import.meta.env.VITE_CLAUDE_API_KEY?.length || 0,
+      apiKeyPrefix: import.meta.env.VITE_CLAUDE_API_KEY?.substring(0, 7) || 'none'
+    });
+    
     // Check if API key is available
-    if (!process.env.REACT_APP_CLAUDE_API_KEY) {
+    if (!import.meta.env.VITE_CLAUDE_API_KEY) {
       console.warn('No Claude API key found. Using fallback code generation.');
       return this.generateFallbackCode(componentName, framework, styling, componentDetails);
     }
@@ -58,6 +65,9 @@ Requirements:
 - Use semantic HTML elements
 - Include proper error handling
 - Follow the existing design system patterns
+
+Component Specifications:
+${this.getComponentSpecifications(componentName, componentDetails)}
 
 Generate clean, production-ready code for your design system. Only respond with the code, no explanations.`;
 

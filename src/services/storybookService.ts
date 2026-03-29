@@ -37,7 +37,7 @@ interface ComponentDetails {
 }
 
 class StorybookService {
-  private storybookUrl: string = 'https://687a614558f8de72c52bf829-wboedldegu.chromatic.com';
+  private storybookUrl: string = 'https://687bba4d795507daa442f549-cgildnerdh.chromatic.com';
   private isConnected: boolean = false;
   private componentCache: Map<string, ComponentDetails> = new Map();
 
@@ -48,6 +48,12 @@ class StorybookService {
       if (this.isConnected) {
         console.log('Connected to Storybook - fetching components');
         const components = await this.getStorybookData();
+        
+        // Populate the component cache with all fetched components
+        components.forEach(component => {
+          this.componentCache.set(component.name, component);
+        });
+        
         return this.transformToComponentArray(components);
       } else {
         console.log('Storybook not available - using fallback data');
@@ -107,7 +113,9 @@ class StorybookService {
         }
       });
       
-      return code;
+      // Add component specifications to the generated code
+      const specs = this.getComponentSpecifications(componentName, componentDetails);
+      return `${code}\n\n// Component Specifications:\n${specs}`;
     } catch (error) {
       console.error('Code generation failed:', error);
       throw new Error('Failed to generate code. Try again.');
@@ -115,29 +123,76 @@ class StorybookService {
   }
 
   openComponentDocs(componentName: string): void {
-    const encodedName = encodeURIComponent(componentName);
-    const docsUrl = `${this.storybookUrl}/?path=/docs/${encodedName.toLowerCase()}-${encodedName.toLowerCase()}--docs`;
+    console.log(`🔍 Opening docs for component: ${componentName}`);
+    console.log(`📚 Component cache has ${this.componentCache.size} components`);
+    
+    // Find the actual story ID for this component's docs
+    const componentDetails = this.componentCache.get(componentName);
+    if (componentDetails?.stories.length) {
+      console.log(`📖 Found ${componentDetails.stories.length} stories for ${componentName}`);
+      
+      // Look for a docs story
+      const docsStory = componentDetails.stories.find(story => 
+        story.name.toLowerCase() === 'docs' || story.id.includes('--docs')
+      );
+      if (docsStory) {
+        const docsUrl = `${this.storybookUrl}/?path=/docs/${docsStory.id}`;
+        console.log(`✅ Opening docs URL: ${docsUrl}`);
+        window.open(docsUrl, '_blank');
+        return;
+      }
+    }
+    
+    // Fallback: try to construct URL based on component name
+    const docsUrl = `${this.storybookUrl}/?path=/docs/lumiere-${componentName.toLowerCase()}--docs`;
+    console.log(`⚠️ Using fallback docs URL: ${docsUrl}`);
     window.open(docsUrl, '_blank');
   }
 
   openComponentStory(componentName: string, variant?: string): void {
-    const encodedName = encodeURIComponent(componentName);
-    let storyUrl = `${this.storybookUrl}/?path=/story/${encodedName.toLowerCase()}-${encodedName.toLowerCase()}`;
+    // Find the actual story ID for this component
+    const componentDetails = this.componentCache.get(componentName);
+    if (componentDetails?.stories.length) {
+      let targetStory;
+      
+      if (variant) {
+        // Look for a story with the specific variant name
+        targetStory = componentDetails.stories.find(story => 
+          story.name.toLowerCase().includes(variant.toLowerCase()) && !story.id.includes('--docs')
+        );
+      } else {
+        // Look for the first non-docs story
+        targetStory = componentDetails.stories.find(story => !story.id.includes('--docs'));
+      }
+      
+      if (targetStory) {
+        const storyUrl = `${this.storybookUrl}/?path=/story/${targetStory.id}`;
+        window.open(storyUrl, '_blank');
+        return;
+      }
+    }
     
+    // Fallback: try to construct URL based on component name
+    let storyUrl = `${this.storybookUrl}/?path=/story/lumiere-${componentName.toLowerCase()}`;
     if (variant) {
       storyUrl += `--${variant.toLowerCase().replace(/\s+/g, '-')}`;
     }
-    
     window.open(storyUrl, '_blank');
   }
 
   private async checkStorybookConnection(): Promise<boolean> {
     try {
-      // Try to fetch the main Storybook page to check if it's accessible
-      const response = await fetch(`${this.storybookUrl}/iframe.html`);
-      return response.ok;
+      // Try to fetch the stories.json to check if it's accessible
+      const response = await fetch(`${this.storybookUrl}/stories.json`);
+      if (response.ok) {
+        console.log('✅ Storybook connection successful');
+        return true;
+      } else {
+        console.log(`⚠️ Storybook connection failed with status: ${response.status}`);
+        return false;
+      }
     } catch (error) {
-      console.error('Storybook connection check failed:', error);
+      console.error('❌ Storybook connection check failed:', error);
       return false;
     }
   }

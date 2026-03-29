@@ -30,7 +30,7 @@
   --color-brand-950: #1a2a3a;
   
   --font-sans: "Helvetica Neue";
-  --font-mono: Monaco, Consolas, monospace;
+  --font-mono: "Helvetica Neue";
 }
 
 @layer base {
@@ -90,23 +90,23 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-brand-600 hover:bg-brand-700 text-white px-6 py-3 rounded-xl transition-all duration-200 font-semibold shadow-sm hover:shadow-md focus:ring-2 focus:ring-brand-500 focus:ring-offset-2;
+    @apply px-6 py-3 font-semibold text-white rounded-xl shadow-sm transition-all duration-200 bg-brand-600 hover:bg-brand-700 hover:shadow-md focus:ring-2 focus:ring-brand-500 focus:ring-offset-2;
   }
   
   .btn-secondary {
-    @apply bg-accent-500 hover:bg-accent-600 text-white px-6 py-3 rounded-xl transition-all duration-200 font-semibold shadow-sm hover:shadow-md focus:ring-2 focus:ring-accent-500 focus:ring-offset-2;
+    @apply px-6 py-3 font-semibold text-white rounded-xl shadow-sm transition-all duration-200 bg-accent-500 hover:bg-accent-600 hover:shadow-md focus:ring-2 focus:ring-accent-500 focus:ring-offset-2;
   }
 
   .btn-outline {
-    @apply border-2 border-brand-300 text-brand-700 hover:bg-brand-50 hover:border-brand-500 px-6 py-3 rounded-xl transition-all duration-200 font-semibold focus:ring-2 focus:ring-brand-500 focus:ring-offset-2;
+    @apply px-6 py-3 font-semibold rounded-xl border-2 transition-all duration-200 border-brand-300 text-brand-700 hover:bg-brand-50 hover:border-brand-500 focus:ring-2 focus:ring-brand-500 focus:ring-offset-2;
   }
   
   .card {
-    @apply bg-white rounded-xl border border-brand-200 shadow-sm hover:shadow-lg transition-all duration-200 p-6;
+    @apply p-6 bg-white rounded-xl border shadow-sm transition-all duration-200 border-brand-200 hover:shadow-lg;
   }
 
   .card-header {
-    @apply border-b border-brand-200 pb-4 mb-4;
+    @apply pb-4 mb-4 border-b border-brand-200;
   }
 
   .card-body {
@@ -114,19 +114,19 @@
   }
   
   .input-field {
-    @apply w-full px-4 py-3 border border-brand-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all duration-200 text-brand-900 placeholder-brand-400 bg-white;
+    @apply px-4 py-3 w-full bg-white rounded-xl border transition-all duration-200 border-brand-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent text-brand-900 placeholder-brand-400;
   }
 
   .input-field:focus {
-    @apply ring-2 ring-brand-500 ring-offset-2;
+    @apply ring-2 ring-offset-2 ring-brand-500;
   }
 
   .select-field {
-    @apply w-full px-4 py-3 border border-brand-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all duration-200 text-brand-900 bg-white font-medium;
+    @apply px-4 py-3 w-full font-medium bg-white rounded-xl border transition-all duration-200 border-brand-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent text-brand-900;
   }
 
   .badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+    @apply inline-flex items-center px-3 py-1 text-sm font-medium rounded-full;
   }
 
   .badge-success {
@@ -142,7 +142,7 @@
   }
 
   .loading-skeleton {
-    @apply animate-pulse bg-brand-100 rounded;
+    @apply rounded animate-pulse bg-brand-100;
   }
 
   .gradient-brand {
@@ -158,7 +158,7 @@
   }
 
   .hover-lift {
-    @apply hover:-translate-y-1 hover:shadow-lg transition-all duration-200;
+    @apply transition-all duration-200 hover:-translate-y-1 hover:shadow-lg;
   }
 }
 

@@ -48,7 +48,7 @@ export default {
       },
       fontFamily: {
         sans: ['Helvetica Neue'],
-        mono: ['Monaco', 'Consolas', 'monospace'],
+        mono: ['Helvetica Neue'],
       },
       spacing: {
         '18': '4.5rem',

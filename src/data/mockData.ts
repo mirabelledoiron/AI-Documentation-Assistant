@@ -89,7 +89,7 @@ export const aiInsights: AIInsight[] = [
     title: 'Unused Component Variants',
     description: 'I noticed your Button.ghost variant has 0% usage across projects. Consider deprecating it.',
     priority: 'low',
-    savings: '2KB bundle size'
+    action: 'Deprecate ghost variant'
   },
   {
     type: 'accessibility',

@@ -89,14 +89,14 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ isGenerating, setIsGenera
   return (
     <div className="space-y-8">
       <div className="p-8 bg-white rounded-xl border shadow-sm border-brand-200">
-        <h3 className="mb-6 text-xl font-semibold text-brand-900">My AI Code Generator</h3>
+        <h3 className="mb-6 text-xl font-semibold text-accent-700">My AI Code Generator</h3>
         <div className="space-y-6">
           <div>
             <label className="block mb-3 text-sm font-semibold text-brand-700">
               Component Type
             </label>
             <select 
-              className="p-3 w-full bg-white rounded-xl border transition-all duration-200 border-brand-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent text-brand-900"
+              className="p-3 w-full bg-white rounded-xl border transition-all duration-200 border-brand-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent text-accent-700"
               value={selectedComponent}
               onChange={(e) => setSelectedComponent(e.target.value)}
             >
@@ -111,7 +111,7 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ isGenerating, setIsGenera
               Framework
             </label>
             <select 
-              className="p-3 w-full bg-white rounded-xl border transition-all duration-200 border-brand-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent text-brand-900"
+              className="p-3 w-full bg-white rounded-xl border transition-all duration-200 border-brand-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent text-accent-700"
               value={selectedFramework}
               onChange={(e) => setSelectedFramework(e.target.value)}
             >
@@ -126,7 +126,7 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ isGenerating, setIsGenera
               Styling Approach
             </label>
             <select 
-              className="p-3 w-full bg-white rounded-xl border transition-all duration-200 border-brand-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent text-brand-900"
+              className="p-3 w-full bg-white rounded-xl border transition-all duration-200 border-brand-200 focus:ring-2 focus:ring-brand-500 focus:border-transparent text-accent-700"
               value={selectedStyling}
               onChange={(e) => setSelectedStyling(e.target.value)}
             >
@@ -137,9 +137,9 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ isGenerating, setIsGenera
           </div>
           
           <div className="p-6 rounded-xl border bg-brand-50 border-brand-200">
-            <h4 className="mb-3 font-semibold text-brand-900">Generation Preview</h4>
+            <h4 className="mb-3 font-semibold text-accent-700">Generation Preview</h4>
             <p className="text-brand-700">
-              Will generate: <strong className="text-brand-900">{selectedComponent}</strong> component using <strong className="text-brand-900">{selectedFramework}</strong> with <strong className="text-brand-900">{selectedStyling}</strong> styling
+              Will generate: <strong className="text-accent-700">{selectedComponent}</strong> component using <strong className="text-accent-700">{selectedFramework}</strong> with <strong className="text-accent-700">{selectedStyling}</strong> styling
             </p>
           </div>
           
@@ -157,7 +157,7 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ isGenerating, setIsGenera
       {generatedCode && (
         <div className="p-8 bg-white rounded-xl border shadow-sm border-brand-200">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-semibold text-brand-900">Generated Code</h3>
+            <h3 className="text-xl font-semibold text-accent-700">Generated Code</h3>
             <div className="flex items-center space-x-3 text-sm text-brand-600">
               <div className="p-1 bg-green-100 rounded-full">
                 <CheckCircle className="w-4 h-4 text-green-600" />
@@ -209,7 +209,7 @@ const CodeGenerator: React.FC<CodeGeneratorProps> = ({ isGenerating, setIsGenera
 
       {/* Code Generation Tips */}
       <div className="p-8 bg-white rounded-xl border shadow-sm border-brand-200">
-        <h3 className="mb-6 text-xl font-semibold text-brand-900">Code Generation Tips</h3>
+        <h3 className="mb-6 text-xl font-semibold text-accent-700">Code Generation Tips</h3>
         <div className="space-y-4 text-brand-700">
           <div className="flex items-start space-x-3">
             <div className="flex-shrink-0 mt-2 w-2 h-2 rounded-full bg-brand-500"></div>
