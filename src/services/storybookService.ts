@@ -287,13 +287,13 @@ class StorybookService {
 
   private transformToComponentArray(components: ComponentDetails[]): Component[] {
     return components.map(comp => ({
+      id: comp.name.toLowerCase().replace(/\s+/g, '-'),
       name: comp.name,
       category: comp.category,
       usage: comp.usage,
-      lastUpdated: comp.lastUpdated,
-      status: comp.status,
-      accessibility: comp.accessibility,
-      variants: comp.variants
+      lastUsed: new Date(),
+      variants: comp.variants,
+      props: {}
     }));
   }
 
@@ -353,22 +353,22 @@ class StorybookService {
   private getFallbackData(): Component[] {
     return [
       {
+        id: 'button',
         name: 'Button',
         category: 'Interactive',
         usage: 89,
-        lastUpdated: '2 days ago',
-        status: 'stable',
-        accessibility: 'AA',
-        variants: ['primary', 'secondary', 'ghost', 'danger']
+        lastUsed: new Date(),
+        variants: ['primary', 'secondary', 'ghost', 'danger'],
+        props: {}
       },
       {
+        id: 'card',
         name: 'Card',
         category: 'Layout',
         usage: 76,
-        lastUpdated: '1 week ago',
-        status: 'stable',
-        accessibility: 'AAA',
-        variants: ['default', 'elevated', 'outlined']
+        lastUsed: new Date(),
+        variants: ['default', 'elevated', 'outlined'],
+        props: {}
       }
     ];
   }

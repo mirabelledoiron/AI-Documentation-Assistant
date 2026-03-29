@@ -13,7 +13,7 @@ My personal design system management application that integrates with Storybook 
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - A Storybook instance (optional)
 
@@ -73,7 +73,7 @@ REACT_APP_STORYBOOK_URL=https://687bba4d795507daa442f549-cgildnerdh.chromatic.co
 
 ### Component Structure
 
-```
+```jsx
 src/
 │   ├── components/
 │   │   ├── Dashboard.tsx   # Main dashboard view

@@ -1,115 +1,108 @@
-import type { Component, DesignToken, AIInsight } from '../types';
+import type { Component, DesignToken } from '../types';
 
 export const components: Component[] = [
   {
+    id: '1',
     name: 'Button',
     category: 'Interactive',
-    usage: 89,
-    lastUpdated: '2 days ago',
-    status: 'stable',
-    accessibility: 'AA',
-    variants: ['primary', 'secondary', 'ghost', 'danger']
+    usage: 85,
+    lastUsed: new Date('2024-01-15'),
+    variants: ['primary', 'secondary', 'ghost', 'danger'],
+    props: { size: 'md', disabled: false }
   },
   {
+    id: '2',
     name: 'Card',
     category: 'Layout',
-    usage: 76,
-    lastUpdated: '1 week ago',
-    status: 'stable',
-    accessibility: 'AAA',
-    variants: ['default', 'elevated', 'outlined']
+    usage: 72,
+    lastUsed: new Date('2024-01-10'),
+    variants: ['default', 'elevated', 'outlined'],
+    props: { padding: 'md', shadow: 'sm' }
   },
   {
+    id: '3',
+    name: 'Input',
+    category: 'Form',
+    usage: 68,
+    lastUsed: new Date('2024-01-12'),
+    variants: ['text', 'email', 'password', 'number'],
+    props: { type: 'text', placeholder: '' }
+  },
+  {
+    id: '4',
     name: 'Modal',
     category: 'Overlay',
     usage: 45,
-    lastUpdated: '3 days ago',
-    status: 'beta',
-    accessibility: 'AA',
-    variants: ['small', 'medium', 'large', 'fullscreen']
+    lastUsed: new Date('2024-01-14'),
+    variants: ['small', 'medium', 'large', 'full'],
+    props: { isOpen: false, size: 'md' }
   },
   {
-    name: 'Input',
-    category: 'Form',
-    usage: 92,
-    lastUpdated: '1 day ago',
-    status: 'stable',
-    accessibility: 'AAA',
-    variants: ['text', 'email', 'password', 'number']
+    id: '5',
+    name: 'Dropdown',
+    category: 'Navigation',
+    usage: 52,
+    lastUsed: new Date('2024-01-13'),
+    variants: ['default', 'searchable', 'multi-select'],
+    props: { options: [], multiple: false }
   },
   {
-    name: 'Tooltip',
-    category: 'Overlay',
-    usage: 67,
-    lastUpdated: '5 days ago',
-    status: 'stable',
-    accessibility: 'AA',
-    variants: ['top', 'bottom', 'left', 'right']
-  },
-  {
-    name: 'Badge',
-    category: 'Display',
-    usage: 54,
-    lastUpdated: '1 week ago',
-    status: 'stable',
-    accessibility: 'AA',
-    variants: ['primary', 'secondary', 'success', 'warning', 'danger']
+    id: '6',
+    name: 'Alert',
+    category: 'Feedback',
+    usage: 38,
+    lastUsed: new Date('2024-01-08'),
+    variants: ['info', 'success', 'warning', 'error'],
+    props: { type: 'info', dismissible: true }
   }
 ];
 
 export const designTokens: DesignToken[] = [
-  { name: 'color-brand-500', value: '#29405A', category: 'colors', usage: 45 },
-  { name: 'color-brand-600', value: '#395A7E', category: 'colors', usage: 32 },
-  { name: 'color-brand-700', value: '#4974A2', category: 'colors', usage: 28 },
-  { name: 'color-brand-800', value: '#658EB9', category: 'colors', usage: 15 },
-  { name: 'color-brand-900', value: '#ACC2D9', category: 'colors', usage: 12 },
-  { name: 'color-accent-500', value: '#658EB9', category: 'colors', usage: 25 },
-  { name: 'color-accent-600', value: '#4974A2', category: 'colors', usage: 20 },
-  { name: 'color-accent-700', value: '#395A7E', category: 'colors', usage: 18 },
-  { name: 'spacing-xs', value: '4px', category: 'spacing', usage: 67 },
-  { name: 'spacing-sm', value: '8px', category: 'spacing', usage: 89 },
-  { name: 'spacing-md', value: '16px', category: 'spacing', usage: 95 },
-  { name: 'spacing-lg', value: '24px', category: 'spacing', usage: 78 },
-  { name: 'spacing-xl', value: '32px', category: 'spacing', usage: 56 },
-  { name: 'typography-heading-sm', value: '18px/1.4', category: 'typography', usage: 34 },
-  { name: 'typography-heading-md', value: '20px/1.3', category: 'typography', usage: 56 },
-  { name: 'typography-heading-lg', value: '24px/1.2', category: 'typography', usage: 43 },
-  { name: 'typography-body-sm', value: '14px/1.5', category: 'typography', usage: 87 },
-  { name: 'typography-body-md', value: '16px/1.5', category: 'typography', usage: 92 },
-  { name: 'border-radius-sm', value: '4px', category: 'borders', usage: 67 },
-  { name: 'border-radius-md', value: '8px', category: 'borders', usage: 89 },
-  { name: 'border-radius-lg', value: '12px', category: 'borders', usage: 45 },
-  { name: 'shadow-sm', value: '0 1px 2px rgba(0,0,0,0.05)', category: 'shadows', usage: 76 },
-  { name: 'shadow-md', value: '0 4px 6px rgba(0,0,0,0.1)', category: 'shadows', usage: 54 }
+  { id: '1', name: 'color-brand-500', value: '#29405A', category: 'color', description: 'Primary brand color' },
+  { id: '2', name: 'color-brand-600', value: '#395A7E', category: 'color', description: 'Dark brand color' },
+  { id: '3', name: 'color-brand-700', value: '#4974A2', category: 'color', description: 'Accent brand color' },
+  { id: '4', name: 'color-brand-800', value: '#658EB9', category: 'color', description: 'Light brand color' },
+  { id: '5', name: 'color-brand-900', value: '#ACC2D9', category: 'color', description: 'Very light brand color' },
+  { id: '6', name: 'color-accent-500', value: '#658EB9', category: 'color', description: 'Primary accent color' },
+  { id: '7', name: 'color-accent-600', value: '#4974A2', category: 'color', description: 'Dark accent color' },
+  { id: '8', name: 'color-accent-700', value: '#395A7E', category: 'color', description: 'Very dark accent color' },
+  { id: '9', name: 'spacing-xs', value: '4px', category: 'spacing', description: 'Extra small spacing' },
+  { id: '10', name: 'spacing-sm', value: '8px', category: 'spacing', description: 'Small spacing' },
+  { id: '11', name: 'spacing-md', value: '16px', category: 'spacing', description: 'Medium spacing' },
+  { id: '12', name: 'spacing-lg', value: '24px', category: 'spacing', description: 'Large spacing' },
+  { id: '13', name: 'spacing-xl', value: '32px', category: 'spacing', description: 'Extra large spacing' },
+  { id: '14', name: 'typography-heading-sm', value: '18px/1.4', category: 'typography', description: 'Small heading' },
+  { id: '15', name: 'typography-heading-md', value: '20px/1.3', category: 'typography', description: 'Medium heading' },
+  { id: '16', name: 'typography-heading-lg', value: '24px/1.2', category: 'typography', description: 'Large heading' },
+  { id: '17', name: 'typography-body-sm', value: '14px/1.5', category: 'typography', description: 'Small body text' },
+  { id: '18', name: 'typography-body-md', value: '16px/1.5', category: 'typography', description: 'Medium body text' },
+  { id: '19', name: 'border-radius-sm', value: '4px', category: 'border', description: 'Small border radius' },
+  { id: '20', name: 'border-radius-md', value: '8px', category: 'border', description: 'Medium border radius' },
+  { id: '21', name: 'border-radius-lg', value: '12px', category: 'border', description: 'Large border radius' },
+  { id: '22', name: 'shadow-sm', value: '0 1px 2px rgba(0,0,0,0.05)', category: 'shadow', description: 'Small shadow' },
+  { id: '23', name: 'shadow-md', value: '0 4px 6px rgba(0,0,0,0.1)', category: 'shadow', description: 'Medium shadow' }
 ];
 
-export const aiInsights: AIInsight[] = [
+export const aiInsights = [
   {
-    type: 'optimization',
-    title: 'Unused Component Variants',
-    description: 'I noticed your Button.ghost variant has 0% usage across projects. Consider deprecating it.',
-    priority: 'low',
-    action: 'Deprecate ghost variant'
+    title: 'Component Consistency',
+    description: 'Your Button components show 95% consistency across variants, but Modal components could benefit from standardized sizing.',
+    priority: 'medium',
+    action: 'Review Modal component variants and implement consistent sizing scale',
+    savings: '2-3 hours per project'
   },
   {
-    type: 'accessibility',
-    title: 'Color Contrast Issue',
-    description: 'Your secondary button on light backgrounds fails WCAG AA standards. This needs attention.',
+    title: 'Accessibility Improvements',
+    description: 'Form components need better ARIA labeling. Current accessibility score: 78%.',
     priority: 'high',
-    action: 'Update color-brand-600 token'
+    action: 'Add proper ARIA labels and roles to Input, Checkbox, and Radio components',
+    savings: 'Reduced accessibility audit time by 40%'
   },
   {
-    type: 'consistency',
-    title: 'Spacing Inconsistency',
-    description: 'I found that your cards use custom margins instead of design tokens in 3 projects. Let me help you fix this.',
-    priority: 'medium',
-    action: 'Auto-migrate to spacing tokens'
-  },
-  {
-    type: 'maintenance',
-    title: 'Outdated Dependencies',
-    description: 'Your Modal component uses a deprecated focus management library. Time for an upgrade.',
-    priority: 'medium',
-    action: 'Upgrade to latest focus-trap version'
+    title: 'Design Token Usage',
+    description: 'Color tokens are well-utilized (87%), but spacing tokens could be more consistent.',
+    priority: 'low',
+    action: 'Audit spacing usage and standardize common values',
+    savings: '1-2 hours per project'
   }
 ];

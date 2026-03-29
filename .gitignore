@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+deployment
 *.local
 
 # Editor directories and files
@@ -26,3 +27,10 @@ dist-ssr
 
 *storybook.log
 storybook-static
+
+# files to ignore for deployment
+DEPLOYMENT.md
+ENV_SETUP.md
+SETUP_GUIDE.md
+AI_SETUP.md
+

@@ -4,46 +4,17 @@
 @tailwind components;
 @tailwind utilities;
 
-@theme {
-  --color-brand-50: #f0f2f5;
-  --color-brand-100: #e1e5ea;
-  --color-brand-200: #c3cbd5;
-  --color-brand-300: #a5b1c0;
-  --color-brand-400: #8797ab;
-  --color-brand-500: #29405A;
-  --color-brand-600: #395A7E;
-  --color-brand-700: #4974A2;
-  --color-brand-800: #658EB9;
-  --color-brand-900: #395775;
-  --color-brand-950: #1a2a3a;
-  
-  --color-accent-50: #f0f4f8;
-  --color-accent-100: #dde7f0;
-  --color-accent-200: #bbd0e1;
-  --color-accent-300: #99b9d2;
-  --color-accent-400: #77a2c3;
-  --color-accent-500: #658EB9;
-  --color-accent-600: #4974A2;
-  --color-accent-700: #395A7E;
-  --color-accent-800: #29405A;
-  --color-accent-900: #395775;
-  --color-brand-950: #1a2a3a;
-  
-  --font-sans: "Helvetica Neue";
-  --font-mono: "Helvetica Neue";
-}
-
 @layer base {
   html {
-    font-family: var(--font-sans);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     scroll-behavior: smooth;
   }
   
   body {
     margin: 0;
     padding: 0;
-    background-color: var(--color-brand-50);
-    color: var(--color-brand-900);
+    background-color: #f0f2f5;
+    color: #395775;
     line-height: 1.6;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
@@ -53,7 +24,7 @@
   h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     line-height: 1.2;
-    color: var(--color-brand-900);
+    color: #395775;
     letter-spacing: -0.025em;
   }
 
@@ -68,22 +39,22 @@
   }
 
   p {
-    color: var(--color-brand-900);
+    color: #395775;
     line-height: 1.7;
   }
 
   *:focus-visible {
-    outline: 2px solid var(--color-brand-900);
+    outline: 2px solid #395775;
     outline-offset: 2px;
   }
 
   ::selection {
-    background-color: var(--color-accent-500);
+    background-color: #658EB9;
     color: white;
   }
 
   ::-moz-selection {
-    background-color: var(--color-accent-500);
+    background-color: #658EB9;
     color: white;
   }
 }

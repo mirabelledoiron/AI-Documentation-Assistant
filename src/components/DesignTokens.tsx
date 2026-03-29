@@ -36,7 +36,7 @@ const DesignTokens: React.FC = () => {
 
   const renderTokenPreview = (token: DesignToken) => {
     switch (token.category) {
-      case 'colors':
+      case 'color':
         return (
           <div 
             className="w-10 h-10 rounded-lg border-2 border-brand-200"
@@ -65,14 +65,14 @@ const DesignTokens: React.FC = () => {
             Aa
           </div>
         );
-      case 'borders':
+      case 'border':
         return (
           <div 
             className="w-10 h-10 bg-white border-2 border-brand-400"
             style={{ borderRadius: token.value }}
           />
         );
-      case 'shadows':
+      case 'shadow':
         return (
           <div 
             className="w-10 h-10 bg-white rounded-lg border border-brand-200"
@@ -145,12 +145,6 @@ const DesignTokens: React.FC = () => {
                   </div>
                   
                   <div className="flex items-center space-x-3">
-                    {token.usage && (
-                      <div className="mr-4 text-right">
-                        <p className="text-sm font-semibold text-brand-900">{token.usage}%</p>
-                        <p className="text-xs text-brand-600">usage</p>
-                      </div>
-                    )}
                     
                     <button
                       onClick={() => copyToken(token.name)}

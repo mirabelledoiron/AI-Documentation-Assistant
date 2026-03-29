@@ -5,6 +5,12 @@ export default {
   ],
   theme: {
     extend: {
+      fontSize: {
+        'sm': ['1rem', '1.5rem'], // Override text-sm to 1rem (16px) with 1.5 line-height
+      },
+      width: {
+        '32': '10rem',
+      },
       colors: {
         primary: {
           50: '#f8f9fa',
@@ -47,8 +53,8 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Helvetica Neue'],
-        mono: ['Helvetica Neue'],
+        sans: ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+        mono: ['Helvetica Neue', 'Helvetica', 'Arial', 'monospace'],
       },
       spacing: {
         '18': '4.5rem',

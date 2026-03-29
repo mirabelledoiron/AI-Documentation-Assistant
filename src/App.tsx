@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { TrendingUp, Code, Wand2, Palette, Settings, Bot } from 'lucide-react';
+import { TrendingUp, Wand2, Palette, Settings, Bot, BookOpen } from 'lucide-react';
 import Dashboard from './components/Dashboard';
 import ComponentLibrary from './components/ComponentLibrary';
 import CodeGenerator from './components/CodeGenerator';
 import DesignTokens from './components/DesignTokens';
+import type { SavedComponent } from './types';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -11,10 +12,33 @@ const App = () => {
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: TrendingUp },
-    { id: 'components', label: 'Components', icon: Code },
+    { id: 'library', label: 'Component Library', icon: BookOpen },
     { id: 'generator', label: 'AI Generator', icon: Wand2 },
     { id: 'tokens', label: 'Design Tokens', icon: Palette },
   ];
+
+  const handleComponentSelect = (_component: SavedComponent) => {
+    // Navigate to generator with component data
+    setActiveTab('generator');
+    // You could also pass the component data to pre-populate the generator
+  };
+
+  const handleComponentEdit = (_component: SavedComponent) => {
+    // Navigate to generator with component data for editing
+    setActiveTab('generator');
+    // You could also pass the component data to pre-populate the generator
+  };
+
+  const handleComponentDelete = (componentId: string) => {
+    // Component deletion is handled by the library service
+    console.log('Component deleted:', componentId);
+  };
+
+  const handleComponentDuplicate = (_component: SavedComponent) => {
+    // Navigate to generator with duplicated component data
+    setActiveTab('generator');
+    // You could also pass the component data to pre-populate the generator
+  };
 
   return (
     <div className="min-h-screen bg-brand-50">
@@ -74,8 +98,15 @@ const App = () => {
 
       {/* Main Content */}
       <main className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
-      {activeTab === 'dashboard' && <Dashboard onNavigate={setActiveTab} />}
-        {activeTab === 'components' && <ComponentLibrary isGenerating={isGenerating} setIsGenerating={setIsGenerating} />}
+        {activeTab === 'dashboard' && <Dashboard onNavigate={setActiveTab} />}
+        {activeTab === 'library' && (
+          <ComponentLibrary
+            onComponentSelect={handleComponentSelect}
+            onComponentEdit={handleComponentEdit}
+            onComponentDelete={handleComponentDelete}
+            onComponentDuplicate={handleComponentDuplicate}
+          />
+        )}
         {activeTab === 'generator' && <CodeGenerator isGenerating={isGenerating} setIsGenerating={setIsGenerating} />}
         {activeTab === 'tokens' && <DesignTokens />}
       </main>
