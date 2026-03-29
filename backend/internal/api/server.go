@@ -13,24 +13,22 @@ type Server struct {
 }
 
 func NewServer(cfg *config.Config, db *gorm.DB) *Server {
-	r := gin.Default()
-
-	// Middleware
-	r.Use(CORS(cfg.CorsOrigins))
-	r.Use(Logger())
-
-	server := &Server{
-		config: cfg,
-		db:     db,
-		router: r,
+	if cfg.Environment == "production" {
+		gin.SetMode(gin.ReleaseMode)
 	}
 
-	// Setup routes
-	server.setupRoutes()
+	r := gin.New()
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())
+	r.Use(CorsMiddleware(cfg.Security.CORS))
 
-	return server
+	// Wire deps and register routes (keeps this server usable in tests/alt entrypoints)
+	Init(cfg, db)
+	SetupRoutes(r)
+
+	return &Server{config: cfg, db: db, router: r}
 }
 
 func (s *Server) Start() error {
-	return s.router.Run(":" + s.config.ServerPort)
+	return s.router.Run(":" + s.config.Port)
 }

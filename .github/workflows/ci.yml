@@ -61,7 +61,7 @@ jobs:
       
       - name: Run tests
         working-directory: ./frontend
-        run: npm test -- --coverage
+        run: npm test
 
   build:
     needs: [backend-tests, frontend-tests]

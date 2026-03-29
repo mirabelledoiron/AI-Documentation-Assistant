@@ -40,7 +40,7 @@ func searchHandler(c *gin.Context) {
 
 	// Get embeddings for the query
 	client := openai.NewClient(st.cfg.OpenAI.APIKey)
-	embeddingResp, err := client.CreateEmbedding(context.Background(), openai.EmbeddingRequest{
+	embeddingResp, err := client.CreateEmbeddings(context.Background(), openai.EmbeddingRequest{
 		Input: req.Query,
 		Model: openai.AdaEmbeddingV2,
 	})
@@ -282,7 +282,7 @@ func createDocumentHandler(c *gin.Context) {
 
 	// Generate embedding
 	client := openai.NewClient(st.cfg.OpenAI.APIKey)
-	embeddingResp, err := client.CreateEmbedding(context.Background(), openai.EmbeddingRequest{
+	embeddingResp, err := client.CreateEmbeddings(context.Background(), openai.EmbeddingRequest{
 		Input: doc.Content,
 		Model: openai.AdaEmbeddingV2,
 	})
@@ -343,7 +343,7 @@ func performSearch(query string, limit int) ([]models.SearchResult, error) {
 		return nil, fmt.Errorf("server not initialized")
 	}
 	client := openai.NewClient(st.cfg.OpenAI.APIKey)
-	embeddingResp, err := client.CreateEmbedding(context.Background(), openai.EmbeddingRequest{
+	embeddingResp, err := client.CreateEmbeddings(context.Background(), openai.EmbeddingRequest{
 		Input: query,
 		Model: openai.AdaEmbeddingV2,
 	})

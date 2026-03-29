@@ -18,7 +18,7 @@ func NewEmbeddingService(apiKey string) *EmbeddingService {
 }
 
 func (s *EmbeddingService) GetEmbedding(text string) ([]float32, error) {
-	resp, err := s.client.CreateEmbedding(context.Background(), openai.EmbeddingRequest{
+	resp, err := s.client.CreateEmbeddings(context.Background(), openai.EmbeddingRequest{
 		Input: text,
 		Model: openai.AdaEmbeddingV2,
 	})

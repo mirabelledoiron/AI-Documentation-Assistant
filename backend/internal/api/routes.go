@@ -6,10 +6,7 @@ import (
 
 func SetupRoutes(router *gin.Engine) {
 	st := getState()
-	jwtSecret := ""
-	if st != nil && st.cfg != nil {
-		jwtSecret = st.cfg.Security.JWTSecret
-	}
+	_ = st // st is accessed indirectly by handlers; keep this for future auth wiring
 
 	// Health check
 	router.GET("/health", healthCheckHandler)

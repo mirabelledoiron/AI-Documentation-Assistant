@@ -24,10 +24,13 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
-	defer database.Close(db)
+	// Close underlying SQL connection pool on shutdown
+	if sqlDB, err := db.DB.DB(); err == nil {
+		defer sqlDB.Close()
+	}
 
 	// Wire deps into the api package
-	api.Init(cfg, db)
+	api.Init(cfg, db.DB)
 
 	// Setup Gin router
 	router := setupRouter(cfg)
