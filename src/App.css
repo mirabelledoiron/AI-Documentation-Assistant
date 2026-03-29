@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Custom scrollbar using brand colors */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-brand-100 rounded;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-brand-400 rounded;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-brand-700;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Focus styles using brand color */
+  *:focus {
+    @apply outline-2 outline-brand-900 outline-offset-2;
+  }
+
+  /* Selection styles using brand color */
+  ::selection {
+    @apply bg-brand-900 text-white;
+  }
+
+  ::-moz-selection {
+    @apply bg-brand-900 text-white;
+  }
+}
+
+@layer components {
+  /* Shimmer animation component */
+  .animate-shimmer {
+    @apply bg-gradient-to-r from-brand-100 via-brand-200 to-brand-100 bg-[length:200px_100%] animate-[shimmer_1.5s_infinite];
+  }
+
+  /* Button active states */
+  .btn-primary:active,
+  .btn-secondary:active {
+    @apply transform translate-y-px;
+  }
+}
+
+@layer utilities {
+  /* Custom keyframes for shimmer animation */
+  @keyframes shimmer {
+    0% {
+      background-position: -200px 0;
+    }
+    100% {
+      background-position: calc(200px + 100%) 0;
+    }
+  }
+
+  /* Print styles */
+  @media print {
+    .no-print {
+      @apply hidden;
+    }
+    
+    body {
+      @apply bg-white text-black;
+    }
+  }
+
+  /* High contrast mode adjustments */
+  @media (prefers-contrast: high) {
+    .border-brand-200 {
+      @apply border-brand-800;
+    }
+    
+    .bg-brand-50 {
+      @apply bg-brand-200;
+    }
+  }
+
+  /* Reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      @apply motion-reduce:animate-none motion-reduce:transition-none;
+    }
+  }
+}
+
