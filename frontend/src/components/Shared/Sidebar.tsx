@@ -13,6 +13,7 @@ const nav = [
   { to: '/analytics', label: 'QUERY LOG' },
   { to: '/case-studies', label: 'CASE STUDIES' },
   { to: '/settings/api-keys', label: 'API KEYS' },
+  { to: '/process', label: 'DESIGN PROCESS' },
 ];
 
 function SidebarNav() {

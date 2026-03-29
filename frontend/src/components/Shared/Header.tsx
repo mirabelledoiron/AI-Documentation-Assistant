@@ -11,7 +11,7 @@ export const Header: React.FC = () => {
   const { theme, a11y, lowCarbon } = usePreferences();
 
   return (
-    <div className="h-14 flex items-center justify-end px-6 bg-background">
+    <div className="h-14 flex items-center justify-end px-4 sm:px-6 bg-background">
       <div className="flex items-center gap-1">
         <Button
           variant="ghost"

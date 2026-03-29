@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
+import { BarChart2 } from 'lucide-react';
 import { analyticsApi } from '@/services/api';
 import type { UserQuery } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/Shared/Button';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { EmptyState } from '@/components/EmptyState';
 
 export function Analytics() {
   const [queries, setQueries] = useState<UserQuery[]>([]);
@@ -33,8 +36,18 @@ export function Analytics() {
         <CardTitle>Query Log</CardTitle>
       </CardHeader>
       <CardContent>
-      {loading && <div className="text-muted-foreground">Loading…</div>}
-      {error && <div className="text-destructive">{error}</div>}
+      {loading && (
+        <div className="space-y-3">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="flex gap-4">
+              <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-4 w-64" />
+              <Skeleton className="h-4 w-16" />
+            </div>
+          ))}
+        </div>
+      )}
+      {error && <div className="text-destructive text-sm">{error}</div>}
 
       {!loading && !error && (
         <div className="overflow-x-auto">
@@ -49,8 +62,14 @@ export function Analytics() {
             <tbody>
               {queries.length === 0 ? (
                 <tr>
-                  <td className="py-3 text-muted-foreground" colSpan={3}>
-                    No queries yet. Run a search/chat to generate entries.
+                  <td colSpan={3} className="py-0">
+                    <EmptyState
+                      icon={<BarChart2 className="w-6 h-6" />}
+                      title="No queries yet"
+                      description="Start a conversation or run a search to see query history here."
+                      actionLabel="Start chatting"
+                      actionTo="/chat"
+                    />
                   </td>
                 </tr>
               ) : (

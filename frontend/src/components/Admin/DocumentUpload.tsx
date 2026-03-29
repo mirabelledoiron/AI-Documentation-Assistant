@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Upload, X, Check } from 'lucide-react';
 import { documentApi } from '@/services/api';
 import api from '@/services/api';
-import { Button } from '@/components/Shared/Button';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
@@ -228,9 +228,9 @@ export const DocumentUpload: React.FC = () => {
           type="submit"
           disabled={!title || !content}
           loading={isUploading}
-          icon={<Upload className="w-5 h-5" />}
           className="w-full h-12"
         >
+          <Upload className="w-5 h-5 mr-2" />
           Upload Document
         </Button>
       </form>

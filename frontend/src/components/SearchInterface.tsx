@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Search, ExternalLink } from 'lucide-react';
 import { searchApi } from '@/services/api';
 import { SearchResult } from '@/types';
-import { Button } from '@/components/Shared/Button';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 

@@ -14,7 +14,7 @@ export const MainLayout: React.FC = () => {
 
       <div className="flex-1 flex flex-col min-w-0">
         <Header />
-        <div className="flex-1 px-8 pb-8">
+        <div className="flex-1 px-4 sm:px-8 pb-8">
           <div className="max-w-5xl mx-auto">
             <Outlet />
           </div>

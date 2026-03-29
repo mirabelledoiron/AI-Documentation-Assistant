@@ -274,7 +274,7 @@
   }
 
   & code {
-    @apply bg-gray-100 px-2 py-1 rounded text-sm;
+    @apply bg-muted px-2 py-1 rounded text-sm;
   }
 
   & pre {
@@ -282,10 +282,10 @@
   }
 
   & a {
-    @apply text-blue-600 hover:text-blue-800 underline;
+    @apply text-primary hover:text-primary/80 underline;
   }
 
   & blockquote {
-    @apply border-l-4 border-gray-300 pl-4 italic my-2 text-gray-600;
+    @apply border-l-4 border-border pl-4 italic my-2 text-muted-foreground;
   }
 }
