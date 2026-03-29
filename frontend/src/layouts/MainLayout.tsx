@@ -20,6 +20,10 @@ export const MainLayout: React.FC = () => {
         </main>
       </div>
       
+      <footer className="border-t border-border py-4 text-center text-sm text-muted-foreground">
+        {new Date().getFullYear()} | Mirabelle Doiron
+      </footer>
+
       <Toaster
         position="top-right"
         toastOptions={{
