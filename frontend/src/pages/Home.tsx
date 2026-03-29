@@ -5,6 +5,7 @@ import { SearchInterface } from '@/components/SearchInterface';
 import { DocumentUpload } from '@/components/Admin/DocumentUpload';
 import { MessageCircle, Search, Upload, Menu, X, BarChart } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { LowCarbonImage } from '@/components/LowCarbonImage';
 
 type TabType = 'chat' | 'search' | 'upload' | 'analytics';
 
@@ -23,7 +24,7 @@ export const Home: React.FC = () => {
     <div className="bg-gradient-to-br from-muted to-background rounded-lg p-4 border border-border">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          <img
+          <LowCarbonImage
             src="/favicon.svg"
             alt="AI-Powered Documentation Assistant"
             className="h-12 w-auto object-contain"

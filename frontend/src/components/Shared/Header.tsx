@@ -1,13 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, ExternalLink, X } from 'lucide-react';
+import { Search, ExternalLink, X, Sun, Moon, Eye, Leaf } from 'lucide-react';
 import { searchApi } from '@/services/api';
 import type { SearchResult } from '@/types';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/Shared/Button';
 import { Card, CardContent } from '@/components/ui/card';
+import { LowCarbonImage } from '@/components/LowCarbonImage';
+import {
+  usePreferences,
+  toggleTheme,
+  toggleA11y,
+  toggleLowCarbon,
+} from '@/hooks/usePreferences';
 
 export const Header: React.FC = () => {
+  const { theme, a11y, lowCarbon } = usePreferences();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +56,7 @@ export const Header: React.FC = () => {
     <header className="bg-background border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
-          <img
+          <LowCarbonImage
             src="/favicon.svg"
             alt="AI-Powered Documentation Assistant"
             className="h-14 w-auto object-contain"
@@ -145,7 +153,45 @@ export const Header: React.FC = () => {
           </form>
         </div>
 
-        <div className="text-sm text-muted-foreground">v0</div>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-pressed={theme === 'dark'}
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            className="h-8 w-8 inline-flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          </button>
+          <button
+            type="button"
+            onClick={toggleA11y}
+            aria-pressed={a11y}
+            aria-label={a11y ? 'Disable accessibility mode' : 'Enable accessibility mode'}
+            className={[
+              'h-8 w-8 inline-flex items-center justify-center rounded-md transition-colors',
+              a11y
+                ? 'text-primary bg-muted'
+                : 'text-muted-foreground hover:text-foreground hover:bg-muted',
+            ].join(' ')}
+          >
+            <Eye className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            onClick={toggleLowCarbon}
+            aria-pressed={lowCarbon}
+            aria-label={lowCarbon ? 'Disable low carbon mode' : 'Enable low carbon mode'}
+            className={[
+              'h-8 w-8 inline-flex items-center justify-center rounded-md transition-colors',
+              lowCarbon
+                ? 'text-primary bg-muted'
+                : 'text-muted-foreground hover:text-foreground hover:bg-muted',
+            ].join(' ')}
+          >
+            <Leaf className="w-4 h-4" />
+          </button>
+        </div>
       </div>
     </header>
   );

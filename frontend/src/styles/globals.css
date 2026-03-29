@@ -121,6 +121,88 @@
   code, pre, .font-mono {
     font-family: var(--font-mono);
   }
+
+  /* ------------------------------------------------------------------ */
+  /*  A11y Mode                                                         */
+  /* ------------------------------------------------------------------ */
+
+  .a11y {
+    font-size: 112.5%; /* 18 px base */
+
+    /* Enhanced contrast -- true black/white + tighter muted tones */
+    --foreground: 0 0% 0%;
+    --card-foreground: 0 0% 0%;
+    --popover-foreground: 0 0% 0%;
+    --accent-foreground: 0 0% 0%;
+    --muted-foreground: 0 0% 25%;
+    --atelier-fg: 0 0% 0%;
+    --atelier-muted: 0 0% 25%;
+  }
+
+  .a11y.theme-atelier-dark {
+    --foreground: 0 0% 100%;
+    --card-foreground: 0 0% 100%;
+    --popover-foreground: 0 0% 100%;
+    --accent-foreground: 0 0% 100%;
+    --muted-foreground: 0 0% 75%;
+    --atelier-fg: 0 0% 100%;
+    --atelier-muted: 0 0% 75%;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /*  Low Carbon Mode                                                   */
+  /* ------------------------------------------------------------------ */
+
+  .low-carbon,
+  .low-carbon body {
+    font-family: system-ui, -apple-system, sans-serif !important;
+    --font-sans: system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* A11y -- kill all motion */
+.a11y *,
+.a11y *::before,
+.a11y *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* A11y -- stronger focus rings */
+.a11y :focus-visible {
+  outline: 3px solid hsl(var(--ring));
+  outline-offset: 4px;
+}
+
+/* A11y -- visible links (not identified by colour alone) */
+.a11y a {
+  text-decoration: underline !important;
+}
+
+/* Low Carbon -- kill motion */
+.low-carbon *,
+.low-carbon *::before,
+.low-carbon *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Low Carbon -- strip decorative effects */
+.low-carbon * {
+  box-shadow: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Low Carbon -- simplified cards */
+.low-carbon [class*="rounded"] {
+  box-shadow: none !important;
+}
+
+.low-carbon .bg-card,
+.low-carbon [data-slot="card"] {
+  background: transparent !important;
+  border: 1px solid hsl(var(--border)) !important;
 }
 
 @layer utilities {
