@@ -71,6 +71,20 @@ Frontend (React/TS) --> Backend (Go/Gin) --> PostgreSQL + pgvector
 
 Documents are chunked, embedded via OpenAI, and stored as vectors. Search and chat queries embed the user's question, find semantically similar docs, and compose an answer grounded in the retrieved context.
 
+## Accessibility
+
+This project targets WCAG 2.1 AA compliance. Specific measures include:
+
+- **Color contrast** -- all text meets a minimum 4.5:1 ratio against its background; muted text is validated at 7:1
+- **Focus management** -- visible focus rings on all interactive elements, with enhanced 3px outlines in accessibility mode
+- **Reduced motion** -- accessibility mode disables all CSS transitions and animations
+- **Scalable text** -- accessibility mode increases the base font size to 18px (112.5%)
+- **Skip navigation** -- a skip-to-content link is available for keyboard users
+- **Semantic HTML** -- landmarks, headings, and ARIA labels follow WAI-ARIA authoring practices
+- **Automated testing** -- axe-core runs in CI against rendered components to catch regressions
+
+Accessibility mode and Low Carbon mode can be toggled from the header nav.
+
 ## Design Process
 
 See the [Design Process page](/process) in the app for the full rationale -- problem discovery, user research insights, and why each technical decision was made.

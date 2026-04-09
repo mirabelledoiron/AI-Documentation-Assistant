@@ -196,9 +196,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ className = '' }) 
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <Bot className="w-5 h-5 text-muted-foreground" />
-                    <h3 className="text-base font-medium text-foreground">
+                    <h2 className="text-base font-medium text-foreground">
                       Start a conversation
-                    </h3>
+                    </h2>
                   </div>
                   <p className="text-sm text-muted-foreground">
                     Ask about components, patterns, tokens, or guidelines.

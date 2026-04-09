@@ -58,8 +58,8 @@ jobs:
       - name: Run linter
         working-directory: ./frontend
         run: npx eslint . --max-warnings 0 || true
-      
-      - name: Run tests
+
+      - name: Run tests (unit + accessibility)
         working-directory: ./frontend
         run: npm test
 
